@@ -41,6 +41,10 @@ package com.grapefrukt.exporter.serializers.images {
 			return PNGEncoder.encode(bitmapData);
 		}
 		
+		public function get extension():String{
+			return "png";
+		}
+		
 	}
 
 }

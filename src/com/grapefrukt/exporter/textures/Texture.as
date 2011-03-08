@@ -75,7 +75,7 @@ package com.grapefrukt.exporter.textures {
 		}
 		
 		public function get filenameWithPath():String {
-			return sheet.name + "/" + name + ".png";
+			return sheet.name + "/" + name;
 		}
 		
 		public function get zIndex():int { return _z_index; }

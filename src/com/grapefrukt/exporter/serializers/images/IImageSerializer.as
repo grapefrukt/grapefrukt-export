@@ -36,6 +36,7 @@ package com.grapefrukt.exporter.serializers.images {
 	 */
 	public interface IImageSerializer {
 		function serialize(bitmapData:BitmapData):ByteArray;
+		function get extension():String;
 	}
 	
 }
