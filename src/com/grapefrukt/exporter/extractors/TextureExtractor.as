@@ -32,6 +32,7 @@ package com.grapefrukt.exporter.extractors {
 	import com.grapefrukt.exporter.misc.Child;
 	import com.grapefrukt.exporter.textures.Texture;
 	import com.grapefrukt.exporter.textures.TextureSheet;
+	import flash.display.Sprite;
 	
 	import flash.display.BitmapData;
 	import flash.display.DisplayObject;
@@ -47,10 +48,34 @@ package com.grapefrukt.exporter.extractors {
 	
 	public class TextureExtractor {
 		
+		/**
+		 * Experimental property to change the global scale of all exports. Use with caution.
+		 */
 		public static var scaleFactor	:Number = 1;
-		public static var render_margin	:int 	= 2;
-		public static var output_margin	:int 	= 2;
 		
+		/**
+		 * This many pixels will be added to the measured size of the DisplayObject when rendered to a bitmap (these may not be empty due to rounding off errors and antialias)
+		 */
+		public static var edgeMarginRender	:int 	= 2;
+		
+		/**
+		 * This many empty pixels will be added to each side of the texture when it's output (these will always be completely empty)
+		 */
+		public static var edgeMarginOutput	:int 	= 2;
+		
+		/**
+		 * Textures smaller than this will be ignored. Set to a negative value to disable size check. 
+		 */
+		public static var tinyThreshold	:int  	= 5;
+		
+		/**
+		 * Extracts the DisplayObjectContainers children into textures and animation sheets
+		 * @param	target			The DisplayObjectContainer to extract from
+		 * @param	ignore			An array of Strings that let's you ignore certain children
+		 * @param	respectScale	If this is false all children will be extracted at 100%. Set to true to respect the scale of the children as they are in the parent.
+		 * @param	returnClass		Ignore this. Used internally to return FontSheets when so needed. 
+		 * @return	A TextureSheet containing the DisplayObjectContainers children
+		 */
 		public static function extract(target:DisplayObjectContainer, ignore:Array = null, respectScale:Boolean = false, returnClass:Class = null):TextureSheet {
 			Logger.log("TextureExtractor", "extracting", ChildFinder.getName(target));
 			
@@ -66,6 +91,19 @@ package com.grapefrukt.exporter.extractors {
 			ChildFinder.filter(target, children, ignore);
 			
 			return childrenToSheet(target, children, respectScale, returnClass);
+		}
+		
+		public static function extractFromClasses(sheetName:String, ...rest):TextureSheet {
+			var s:Sprite = new Sprite();
+			s.name = sheetName;
+			
+			for each (var item:Class in rest) {
+				var instance:Sprite = new item();
+				instance.name = ChildFinder.getName(instance);
+				s.addChild(instance);
+			}
+
+			return extract(s);
 		}
 		
 		private static function childrenToSheet(target:DisplayObjectContainer, children:Vector.<Child>, respectScale:Boolean, returnClass:Class):TextureSheet {
@@ -109,12 +147,12 @@ package com.grapefrukt.exporter.extractors {
 			bounds.width 	*= compoundScale;
 			bounds.height 	*= compoundScale;
 			
-			bounds.x = 		Math.floor(bounds.x) 		- render_margin;
-			bounds.y = 		Math.floor(bounds.y) 		- render_margin;
-			bounds.height = Math.ceil(bounds.height) 	+ render_margin * 2;
-			bounds.width = Math.ceil(bounds.width) 		+ render_margin * 2;
+			bounds.x = 		Math.floor(bounds.x) 		- edgeMarginRender;
+			bounds.y = 		Math.floor(bounds.y) 		- edgeMarginRender;
+			bounds.height = Math.ceil(bounds.height) 	+ edgeMarginRender * 2;
+			bounds.width = Math.ceil(bounds.width) 		+ edgeMarginRender * 2;
 			
-			if (bounds.width < 5 && bounds.height < 5) {
+			if (tinyThreshold > 0 && bounds.width < tinyThreshold && bounds.height < tinyThreshold) {
 				Logger.log("TextureExtractor", "skipping tiny texture in " + name, bounds.width + "x" + bounds.height, Logger.ERROR);
 				return null;
 			}
@@ -147,10 +185,10 @@ package com.grapefrukt.exporter.extractors {
 			}
 			
 			// add a margin to the edges to prevent wierd smoothing issues
-			crop_rect.x 		-= output_margin;
-			crop_rect.y		 	-= output_margin;
-			crop_rect.width 	+= output_margin * 2;
-			crop_rect.height 	+= output_margin * 2;
+			crop_rect.x 		-= edgeMarginOutput;
+			crop_rect.y		 	-= edgeMarginOutput;
+			crop_rect.width 	+= edgeMarginOutput * 2;
+			crop_rect.height 	+= edgeMarginOutput * 2;
 			
 			// crop out transparency from the edges
 			var crop_bitmap:BitmapData = new BitmapData(crop_rect.width, crop_rect.height, true, 0x00000000);
