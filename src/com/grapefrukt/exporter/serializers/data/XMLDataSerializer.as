@@ -1,0 +1,168 @@
+package com.grapefrukt.exporter.serializers.data {
+	import com.grapefrukt.exporter.animations.Animation;
+	import com.grapefrukt.exporter.animations.AnimationFrame;
+	import com.grapefrukt.exporter.animations.AnimationPart;
+	import com.grapefrukt.exporter.collections.AnimationCollection;
+	import com.grapefrukt.exporter.collections.FontSheetCollection;
+	import com.grapefrukt.exporter.collections.TextureSheetCollection;
+	import com.grapefrukt.exporter.textures.FontSheet;
+	import com.grapefrukt.exporter.textures.Texture;
+	import com.grapefrukt.exporter.textures.TextureSheet;
+	
+	import flash.utils.ByteArray;
+	
+	/**
+	 * ...
+	 * @author Martin Jonasson (m@grapefrukt.com)
+	 */
+	public class XMLDataSerializer extends BaseDataSerializer implements IDataSerializer  {
+		
+		public function serialize(target:*, useFilters:Boolean = false):ByteArray {
+			var xml:XML = _serialize(target);
+			var ba:ByteArray = new ByteArray;
+			ba.writeUTFBytes(addSpaces(xml.toXMLString()));
+			
+			if (useFilters) return filter(ba);
+			return ba;
+		}
+		
+		private function addSpaces(input:String):String {
+			return input.replace(/\/>/g, " />");
+		}
+		
+		private function _serialize(target:*):XML {
+			if (target is FontSheet)	 			return serializeFontSheet(FontSheet(target));
+			if (target is FontSheetCollection)	 	return serializeFontSheetCollection(FontSheetCollection(target));
+			
+			if (target is Texture) 					return serializeTexture(Texture(target));
+			if (target is TextureSheet) 			return serializeTextureSheet(TextureSheet(target));
+			if (target is TextureSheetCollection) 	return serializeTextureSheetCollection(TextureSheetCollection(target));
+			
+			if (target is Animation)				return serializeAnimation(Animation(target));
+			if (target is AnimationCollection)		return serializeAnimationCollection(AnimationCollection(target));
+			if (target is AnimationFrame)			return serializeAnimationFrame(AnimationFrame(target));
+			
+			throw new Error("no code to serialize " + target);
+			return null;
+		}
+		
+		
+		private function serializeTextureSheetCollection(collection:TextureSheetCollection):XML {
+			var xml:XML = <Textures></Textures>
+			for (var i:int = 0; i < collection.size; i++) {
+				xml.appendChild(_serialize(collection.getAtIndex(i)));
+			}
+			return xml;
+		}
+		
+		private function serializeTextureSheet(sheet:TextureSheet):XML {
+			var xml:XML = <TextureSheet></TextureSheet>;
+			xml.@name = sheet.name;
+			
+			sheet.sort();
+			
+			for each(var texture:Texture in sheet.textures) {
+				xml.appendChild(_serialize(texture))
+			}
+			
+			return xml;
+		}
+		
+		private function serializeTexture(texture:Texture):XML {
+			var xml:XML = <Texture></Texture>;
+			xml.@name 	= texture.name;
+			xml.@width 	= Math.round(texture.bounds.width);
+			xml.@height = Math.round(texture.bounds.height);
+			xml.@path 	= texture.filenameWithPath;
+			
+			xml.@registrationPointX = texture.registrationPoint.x.toFixed(2);
+			xml.@registrationPointY = texture.registrationPoint.y.toFixed(2);
+			
+			if (texture.isMask) 		xml.@mask 		= texture.isMask ? "1" : "0";
+			if (texture.isMultiframe) 	xml.@frameCount = texture.frameCount;
+			
+			return xml;
+		}
+		
+		
+		private function serializeAnimationCollection(collection:AnimationCollection):XML {
+			var xml:XML = <Animations></Animations>
+			for (var i:int = 0; i < collection.size; i++) {
+				xml.appendChild(_serialize(collection.getAtIndex(i)));
+			}
+			return xml;
+		}
+		
+		private function serializeAnimation(animation:Animation):XML {
+			var xml:XML = <Animation></Animation>;
+			xml.@name 		= animation.name;
+			xml.@frameCount = animation.frameCount;
+			if(animation.loopAt != -1) 	xml.@loopAt = animation.loopAt;
+			if(animation.mask) 			xml.@mask	= animation.mask;
+			
+			animation.sortParts();
+			
+			for each (var part:AnimationPart in animation.parts) {
+				var partXML:XML = <Part></Part>;
+				partXML.@name = part.name;
+				for (var i:int = 0; i < part.frames.length; i++) {
+					var frameXML:XML = _serialize(part.frames[i]);
+					if (frameXML) {
+						frameXML.@index = i;
+						partXML.appendChild(frameXML);
+					}
+				}
+				
+				xml.appendChild(partXML)
+			}
+			
+			return xml;
+		}
+		
+		private function serializeAnimationFrame(frame:AnimationFrame):XML {
+			var xml:XML = <Frame></Frame>;
+			
+			if (frame.visible) {
+				if (frame.x.toFixed(1) 			!= "0.0")	xml.@x 			= frame.x.toFixed(1);
+				if (frame.y.toFixed(1) 			!= "0.0")	xml.@y 			= frame.y.toFixed(1);
+				if (frame.scaleX.toFixed(2) 	!= "1.00") 	xml.@scaleX 	= frame.scaleX.toFixed(2);
+				if (frame.scaleY.toFixed(2) 	!= "1.00") 	xml.@scaleY 	= frame.scaleY.toFixed(2);
+				if (frame.rotation.toFixed(2) 	!= "0.00") 	xml.@rotation 	= frame.rotation.toFixed(2);
+				if (frame.alpha != 1) 						xml.@alpha 		= frame.alpha.toFixed(2);
+			} else {
+				return null;
+			}
+			
+			return xml;
+		}
+		
+		private function serializeFontSheetCollection(collection:TextureSheetCollection):XML {
+			return _serialize(collection.head)
+		}
+		
+		private function serializeFontSheet(sheet:FontSheet):XML {
+			var xml:XML = <FontData></FontData>;
+			xml.Texture = sheet.fontName + ".png";
+			xml.LineHeight = sheet.lineHeight;
+			xml.CharSpace = sheet.charSpace;
+			xml.WordSpace = sheet.wordSpace;
+			
+			sheet.sort();
+			
+			for each(var texture:Texture in sheet.unmergedTextures) {
+				var charXML:XML = XML("<Char>\n  </Char>");
+				charXML.@id		= texture.name.charCodeAt(0);
+				charXML.@rect_x = texture.bounds.x;
+				charXML.@rect_y = texture.bounds.y;
+				charXML.@rect_w = texture.bounds.width;
+				charXML.@rect_h = texture.bounds.height;
+				
+				xml.appendChild(charXML);
+			}
+			
+			return xml;
+		}
+	
+	}
+
+}

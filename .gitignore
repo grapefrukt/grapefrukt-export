@@ -1,0 +1,5 @@
+bin
+.settings
+.actionScriptProperties
+.project
+*.as3proj
