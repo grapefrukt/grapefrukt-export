@@ -67,7 +67,6 @@ package com.grapefrukt.exporter.serializers.data {
 		
 		private function _serialize(target:*):XML {
 			if (target is FontSheet)	 			return serializeFontSheet(FontSheet(target));
-			if (target is FontSheetCollection)	 	return serializeFontSheetCollection(FontSheetCollection(target));
 			
 			if (target is Texture) 					return serializeTexture(Texture(target));
 			if (target is TextureSheet) 			return serializeTextureSheet(TextureSheet(target));
@@ -172,12 +171,7 @@ package com.grapefrukt.exporter.serializers.data {
 			
 			return xml;
 		}
-		
-		private function serializeFontSheetCollection(collection:TextureSheetCollection):XML {
-			collection.sort();
-			return _serialize(collection.head)
-		}
-		
+				
 		private function serializeFontSheet(sheet:FontSheet):XML {
 			var xml:XML = <FontData></FontData>;
 			xml.Texture = sheet.fontName;
