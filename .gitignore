@@ -4,3 +4,4 @@ bin
 .project
 .flexLibProperties
 *.as3proj
+obj
