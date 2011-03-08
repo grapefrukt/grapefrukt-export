@@ -71,7 +71,11 @@ package com.grapefrukt.exporter.textures {
 		}
 		
 		public function get textures():Vector.<Texture> { return _textures; }
+		
 		public function get name():String { return _name; }
+		public function set name(value:String):void {
+			_name = value;
+		}
 		
 		protected function _sort_textures(one:Texture, two:Texture):Number {
 			if (one.zIndex > two.zIndex) return -1;
