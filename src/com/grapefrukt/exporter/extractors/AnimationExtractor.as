@@ -32,6 +32,7 @@ or implied, of grapefrukt games.
 	import com.grapefrukt.exporter.animations.AnimationFrame;
 	import com.grapefrukt.exporter.collections.AnimationCollection;
 	import com.grapefrukt.exporter.debug.Logger;
+	import com.grapefrukt.exporter.misc.Child;
 	
 	import flash.display.FrameLabel;
 	import flash.display.MovieClip;
@@ -43,9 +44,12 @@ or implied, of grapefrukt games.
 	
 	public class AnimationExtractor {
 		
-		public static function extract(list:AnimationCollection, target:MovieClip, parts:Array):void {
+		public static function extract(list:AnimationCollection, target:MovieClip, ignore:Array = null):void {
 			Logger.log("AnimationExtractor", "extracting", target.toString());
 			var fragments:Vector.<AnimationFragment> = getFragments(target);
+			
+			var parts:Vector.<Child> = ChildFinder.findMultiframe(target);
+			ChildFinder.filter(target, parts, ignore);
 			
 			for each(var fragment:AnimationFragment in fragments) {
 				list.add(getAnimation(target, fragment, parts));
@@ -87,18 +91,18 @@ or implied, of grapefrukt games.
 			return fragments;
 		}
 		
-		private static function getAnimation(mc:MovieClip, fragment:AnimationFragment, parts:Array):Animation {
+		private static function getAnimation(mc:MovieClip, fragment:AnimationFragment, parts:Vector.<Child>):Animation {
 			var loopAt:int = -1;
 			if ( fragment.loops ) loopAt = fragment.totalFrameCount - fragment.loopFrameCount - 1;
 			var animation:Animation = new Animation(fragment.name, fragment.totalFrameCount, loopAt, parts);
 			
-			for each(var part:String in parts) {
+			for each(var part:Child in parts) {
 				for (var frame:int = fragment.startFrame; frame <= fragment.endFrame; frame++){
 					mc.gotoAndStop(frame);
-					if (mc[part]) {
-						animation.setFrame(part, frame - fragment.startFrame, new AnimationFrame(true, mc[part].x, mc[part].y, mc[part].scaleX, mc[part].scaleY, mc[part].rotation, mc[part].alpha, TextureExtractor.scaleFactor));
+					if (mc[part.name]) {
+						animation.setFrame(part.name, frame - fragment.startFrame, new AnimationFrame(true, mc[part.name].x, mc[part.name].y, mc[part.name].scaleX, mc[part.name].scaleY, mc[part.name].rotation, mc[part.name].alpha, TextureExtractor.scaleFactor));
 					} else {
-						animation.setFrame(part, frame - fragment.startFrame, new AnimationFrame(false));
+						animation.setFrame(part.name, frame - fragment.startFrame, new AnimationFrame(false));
 					}
 				}
 			}

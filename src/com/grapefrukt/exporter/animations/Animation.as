@@ -27,6 +27,7 @@ or implied, of grapefrukt games.
 */
 
 package com.grapefrukt.exporter.animations {
+	import com.grapefrukt.exporter.misc.Child;
 	import flash.utils.Dictionary;
 	
 	/**
@@ -43,7 +44,7 @@ package com.grapefrukt.exporter.animations {
 		private var _parts_dict		:Dictionary;
 		private var _mask			:String;
 		
-		public function Animation(name:String, frameCount:int, loopAt:int, parts:Array) {
+		public function Animation(name:String, frameCount:int, loopAt:int, parts:Vector.<Child>) {
 			_loop_at = loopAt;
 			if (_loop_at < -1) throw new Error ("animation cannot loop on negative frames");
 			_frame_count = frameCount;
@@ -52,10 +53,10 @@ package com.grapefrukt.exporter.animations {
 			_parts = new Vector.<AnimationPart>();
 			_parts_dict = new Dictionary;
 			
-			for each(var partName:String in parts) {
-				var aw:AnimationPart = new AnimationPart(partName);
+			for each(var child:Child in parts) {
+				var aw:AnimationPart = new AnimationPart(child.name);
 				_parts.push(aw);
-				_parts_dict[partName] = aw;
+				_parts_dict[child.name] = aw;
 			}
 		}
 		
