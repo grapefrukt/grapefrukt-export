@@ -76,6 +76,7 @@ package com.grapefrukt.exporter.serializers.data {
 		
 		
 		private function serializeTextureSheetCollection(collection:TextureSheetCollection):XML {
+			collection.sort();
 			var xml:XML = <Textures></Textures>
 			for (var i:int = 0; i < collection.size; i++) {
 				xml.appendChild(_serialize(collection.getAtIndex(i)));
@@ -114,6 +115,7 @@ package com.grapefrukt.exporter.serializers.data {
 		
 		
 		private function serializeAnimationCollection(collection:AnimationCollection):XML {
+			collection.sort();
 			var xml:XML = <Animations></Animations>
 			for (var i:int = 0; i < collection.size; i++) {
 				xml.appendChild(_serialize(collection.getAtIndex(i)));
@@ -165,6 +167,7 @@ package com.grapefrukt.exporter.serializers.data {
 		}
 		
 		private function serializeFontSheetCollection(collection:TextureSheetCollection):XML {
+			collection.sort();
 			return _serialize(collection.head)
 		}
 		
