@@ -49,7 +49,7 @@ package com.grapefrukt.exporter.extractors {
 													"pqrstuvwxyzäÄöÖ " + 
 													"åÅ";
 		
-		public static function extract(textFormat:TextFormat, characters:String = "", referenceChar:String = "M", cols:int = 16):FontSheet {
+		public static function extract(textFormat:TextFormat, characters:String = "", cols:int = 16):FontSheet {
 			var sprite:Sprite = new Sprite;
 			sprite.name = textFormat.font.toLowerCase();
 			
