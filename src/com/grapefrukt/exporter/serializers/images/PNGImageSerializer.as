@@ -42,7 +42,7 @@ package com.grapefrukt.exporter.serializers.images {
 		}
 		
 		public function get extension():String{
-			return "png";
+			return ".png";
 		}
 		
 	}

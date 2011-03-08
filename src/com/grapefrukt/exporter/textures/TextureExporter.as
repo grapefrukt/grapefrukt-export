@@ -67,7 +67,7 @@ package com.grapefrukt.exporter.textures {
 		public function queue(texture:Texture):void {
 			_queue.add(function():void {
 				Logger.log("TextureExporter", "compressing: " + texture.filenameWithPath, "", Logger.NOTICE);
-				_file_serializer.serialize(texture.filenameWithPath + "." + _image_serializer.extension, _image_serializer.serialize(texture.bitmap));
+				_file_serializer.serialize(texture.filenameWithPath + _image_serializer.extension, _image_serializer.serialize(texture.bitmap));
 			});
 		}
 		

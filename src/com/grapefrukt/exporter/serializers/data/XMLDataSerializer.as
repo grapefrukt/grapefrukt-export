@@ -33,6 +33,7 @@ package com.grapefrukt.exporter.serializers.data {
 	import com.grapefrukt.exporter.collections.AnimationCollection;
 	import com.grapefrukt.exporter.collections.FontSheetCollection;
 	import com.grapefrukt.exporter.collections.TextureSheetCollection;
+	import com.grapefrukt.exporter.serializers.images.IImageSerializer;
 	import com.grapefrukt.exporter.textures.FontSheet;
 	import com.grapefrukt.exporter.textures.Texture;
 	import com.grapefrukt.exporter.textures.TextureSheet;
@@ -44,6 +45,12 @@ package com.grapefrukt.exporter.serializers.data {
 	 * @author Martin Jonasson (m@grapefrukt.com)
 	 */
 	public class XMLDataSerializer extends BaseDataSerializer implements IDataSerializer  {
+		
+		private var _imageSerializer:IImageSerializer;
+		
+		public function XMLDataSerializer(imageSerializer:IImageSerializer) {
+			_imageSerializer = imageSerializer;
+		}
 		
 		public function serialize(target:*, useFilters:Boolean = false):ByteArray {
 			var xml:XML = _serialize(target);
@@ -102,7 +109,7 @@ package com.grapefrukt.exporter.serializers.data {
 			xml.@name 	= texture.name;
 			xml.@width 	= Math.round(texture.bounds.width);
 			xml.@height = Math.round(texture.bounds.height);
-			xml.@path 	= texture.filenameWithPath;
+			xml.@path 	= texture.filenameWithPath + _imageSerializer.extension;
 			
 			xml.@registrationPointX = texture.registrationPoint.x.toFixed(2);
 			xml.@registrationPointY = texture.registrationPoint.y.toFixed(2);
