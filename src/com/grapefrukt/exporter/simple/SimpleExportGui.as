@@ -42,7 +42,7 @@ package com.grapefrukt.exporter.simple {
 			_text.autoSize = TextFieldAutoSize.CENTER;
 			_text.defaultTextFormat = tf;
 			_text.width = 94;
-			_text.x = 50;
+			_text.x = 53;
 			_text.y = 15;
 			
 			addChild(_text);
