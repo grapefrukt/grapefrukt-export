@@ -27,6 +27,7 @@ or implied, of grapefrukt games.
 */
 
 package com.grapefrukt.exporter.extractors {
+	import com.grapefrukt.exporter.settings.Settings;
 	import com.grapefrukt.exporter.textures.FontSheet;
 	
 	import flash.display.Sprite;
@@ -41,19 +42,11 @@ package com.grapefrukt.exporter.extractors {
 	
 	public class FontExtractor {
 		
-		private static const DEFAULT_CHARS:String = "! \"#$%&'()*+,-./" + 
-													"0123456789:;<=>?" + 
-													"@ABCDEFGHIJKLMNO" + 
-													"PQRSTUVWXY>[\\]^_" + 
-													"ïabcdefghijklmno" + 
-													"pqrstuvwxyzäÄöÖ " + 
-													"åÅ";
-		
 		public static function extract(textFormat:TextFormat, characters:String = "", cols:int = 16):FontSheet {
 			var sprite:Sprite = new Sprite;
 			sprite.name = textFormat.font.toLowerCase();
 			
-			if (characters == "") characters = DEFAULT_CHARS;
+			if (characters == "") characters = Settings.defaultFontChars;
 			var chars:Array = characters.split("");
 			
 			var count:int = 0;

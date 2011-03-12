@@ -30,6 +30,7 @@ package com.grapefrukt.exporter.extractors {
 	
 	import com.grapefrukt.exporter.debug.Logger;
 	import com.grapefrukt.exporter.misc.Child;
+	import com.grapefrukt.exporter.settings.Settings;
 	import com.grapefrukt.exporter.textures.Texture;
 	import com.grapefrukt.exporter.textures.TextureSheet;
 	import flash.display.Sprite;
@@ -47,26 +48,6 @@ package com.grapefrukt.exporter.extractors {
 	 */
 	
 	public class TextureExtractor {
-		
-		/**
-		 * Experimental property to change the global scale of all exports. Use with caution.
-		 */
-		public static var scaleFactor	:Number = 1;
-		
-		/**
-		 * This many pixels will be added to the measured size of the DisplayObject when rendered to a bitmap (these may not be empty due to rounding off errors and antialias)
-		 */
-		public static var edgeMarginRender	:int 	= 2;
-		
-		/**
-		 * This many empty pixels will be added to each side of the texture when it's output (these will always be completely empty)
-		 */
-		public static var edgeMarginOutput	:int 	= 2;
-		
-		/**
-		 * Textures smaller than this will be ignored. Set to a negative value to disable size check. 
-		 */
-		public static var tinyThreshold	:int  	= 5;
 		
 		/**
 		 * Extracts the DisplayObjectContainers children into textures and animation sheets
@@ -138,7 +119,7 @@ package com.grapefrukt.exporter.extractors {
 		
 		public static function getAsTextureSingle(name:String, target:DisplayObject, respectScale:Boolean):Texture {
 			var bounds:Rectangle = target.getBounds(target);
-			var compoundScale:Number = scaleFactor;
+			var compoundScale:Number = Settings.scaleFactor;
 			
 			if (respectScale) compoundScale *= target.scaleX;
 			
@@ -147,12 +128,12 @@ package com.grapefrukt.exporter.extractors {
 			bounds.width 	*= compoundScale;
 			bounds.height 	*= compoundScale;
 			
-			bounds.x = 		Math.floor(bounds.x) 		- edgeMarginRender;
-			bounds.y = 		Math.floor(bounds.y) 		- edgeMarginRender;
-			bounds.height = Math.ceil(bounds.height) 	+ edgeMarginRender * 2;
-			bounds.width = Math.ceil(bounds.width) 		+ edgeMarginRender * 2;
+			bounds.x = 		Math.floor(bounds.x) 		- Settings.edgeMarginRender;
+			bounds.y = 		Math.floor(bounds.y) 		- Settings.edgeMarginRender;
+			bounds.height = Math.ceil(bounds.height) 	+ Settings.edgeMarginRender * 2;
+			bounds.width = Math.ceil(bounds.width) 		+ Settings.edgeMarginRender * 2;
 			
-			if (tinyThreshold > 0 && bounds.width < tinyThreshold && bounds.height < tinyThreshold) {
+			if (Settings.tinyThreshold > 0 && bounds.width < Settings.tinyThreshold && bounds.height < Settings.tinyThreshold) {
 				Logger.log("TextureExtractor", "skipping tiny texture in " + name, bounds.width + "x" + bounds.height, Logger.ERROR);
 				return null;
 			}
@@ -185,10 +166,10 @@ package com.grapefrukt.exporter.extractors {
 			}
 			
 			// add a margin to the edges to prevent wierd smoothing issues
-			crop_rect.x 		-= edgeMarginOutput;
-			crop_rect.y		 	-= edgeMarginOutput;
-			crop_rect.width 	+= edgeMarginOutput * 2;
-			crop_rect.height 	+= edgeMarginOutput * 2;
+			crop_rect.x 		-= Settings.edgeMarginOutput;
+			crop_rect.y		 	-= Settings.edgeMarginOutput;
+			crop_rect.width 	+= Settings.edgeMarginOutput * 2;
+			crop_rect.height 	+= Settings.edgeMarginOutput * 2;
 			
 			// crop out transparency from the edges
 			var crop_bitmap:BitmapData = new BitmapData(crop_rect.width, crop_rect.height, true, 0x00000000);

@@ -33,6 +33,7 @@ or implied, of grapefrukt games.
 	import com.grapefrukt.exporter.collections.AnimationCollection;
 	import com.grapefrukt.exporter.debug.Logger;
 	import com.grapefrukt.exporter.misc.Child;
+	import com.grapefrukt.exporter.settings.Settings;
 	
 	import flash.display.FrameLabel;
 	import flash.display.MovieClip;
@@ -100,7 +101,7 @@ or implied, of grapefrukt games.
 				for (var frame:int = fragment.startFrame; frame <= fragment.endFrame; frame++){
 					mc.gotoAndStop(frame);
 					if (mc[part.name]) {
-						animation.setFrame(part.name, frame - fragment.startFrame, new AnimationFrame(true, mc[part.name].x, mc[part.name].y, mc[part.name].scaleX, mc[part.name].scaleY, mc[part.name].rotation, mc[part.name].alpha, TextureExtractor.scaleFactor));
+						animation.setFrame(part.name, frame - fragment.startFrame, new AnimationFrame(true, mc[part.name].x, mc[part.name].y, mc[part.name].scaleX, mc[part.name].scaleY, mc[part.name].rotation, mc[part.name].alpha, Settings.scaleFactor));
 					} else {
 						animation.setFrame(part.name, frame - fragment.startFrame, new AnimationFrame(false));
 					}

@@ -29,6 +29,7 @@ or implied, of grapefrukt games.
 package com.grapefrukt.exporter.extractors {
 	import com.grapefrukt.exporter.debug.Logger;
 	import com.grapefrukt.exporter.misc.Child;
+	import com.grapefrukt.exporter.settings.Settings;
 	
 	import flash.display.DisplayObjectContainer;
 	import flash.display.MovieClip;
@@ -73,19 +74,13 @@ package com.grapefrukt.exporter.extractors {
 			for (var i:int = children.length - 1; i >= 0; i--) {
 				if (ignore && ignore.indexOf(children[i].name) != -1) {
 					children.splice(i, 1);
-				} else if (children[i].name.indexOf("instance") != -1) {
+				} else if (Settings.ignoreUnnamed && children[i].name.indexOf("instance") == 0) {
 					Logger.log("ChildFinder", "removing unnamed instance:", children[i].name + " at frame: " + children[i].frame + " in parent: " + parent, Logger.ERROR);
 					children.splice(i, 1);
 				}
 			}
 		}
-		
-		public static function nameChildren(target:DisplayObjectContainer):void {
-			for (var i:int = 0; i < target.numChildren; i++) {
-				target.getChildAt(i).name = getName(target.getChildAt(i));
-			}
-		}
-		
+				
 		public static function getName(instance:Object):String {
 			var name:String;
 			if (instance.hasOwnProperty("name")) name = instance.name;
