@@ -29,7 +29,7 @@ or implied, of grapefrukt games.
 package com.grapefrukt.exporter.textures {
 	/**
 	 * ...
-	 * @author Martin Jonasson (m@grapefrukt.com)
+	 * @author Martin Jonasson, m@grapefrukt.com
 	 */
 	public class TextureSheet {
 		

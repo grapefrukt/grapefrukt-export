@@ -39,7 +39,7 @@ or implied, of grapefrukt games.
 	
 	/**
 	 * ...
-	 * @author Martin Jonasson (m@grapefrukt.com)
+	 * @author Martin Jonasson, m@grapefrukt.com
 	 */
 	
 	public class AnimationExtractor {

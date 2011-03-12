@@ -31,7 +31,7 @@ package com.grapefrukt.exporter.serializers.files {
 	
 	/**
 	 * ...
-	 * @author Martin Jonasson (m@grapefrukt.com)
+	 * @author Martin Jonasson, m@grapefrukt.com
 	 */
 	public interface IFileSerializer {
 		function serialize(filename:String, file:ByteArray):void;

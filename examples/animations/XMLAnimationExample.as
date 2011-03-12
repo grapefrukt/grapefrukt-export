@@ -12,7 +12,7 @@ package animations {
 	
 	/**
 	 * ...
-	 * @author Martin Jonasson (m@webbfarbror.se)
+	 * @author Martin Jonasson, m@grapefrukt.com
 	 */
 	public class XMLAnimationExample extends Sprite {
 		

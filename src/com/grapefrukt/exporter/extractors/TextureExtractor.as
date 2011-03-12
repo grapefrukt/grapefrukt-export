@@ -43,7 +43,7 @@ package com.grapefrukt.exporter.extractors {
 	
 	/**
 	 * ...
-	 * @author Martin Jonasson (m@grapefrukt.com)
+	 * @author Martin Jonasson, m@grapefrukt.com
 	 */
 	
 	public class TextureExtractor {

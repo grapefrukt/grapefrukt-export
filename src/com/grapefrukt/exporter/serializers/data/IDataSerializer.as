@@ -33,7 +33,7 @@ package com.grapefrukt.exporter.serializers.data {
 	
 	/**
 	 * ...
-	 * @author Martin Jonasson (m@grapefrukt.com)
+	 * @author Martin Jonasson, m@grapefrukt.com
 	 */
 	public interface IDataSerializer {
 		function serialize(target:*, useFilters:Boolean = false):ByteArray;

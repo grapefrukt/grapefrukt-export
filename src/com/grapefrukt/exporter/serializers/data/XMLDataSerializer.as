@@ -42,7 +42,7 @@ package com.grapefrukt.exporter.serializers.data {
 	
 	/**
 	 * ...
-	 * @author Martin Jonasson (m@grapefrukt.com)
+	 * @author Martin Jonasson, m@grapefrukt.com
 	 */
 	public class XMLDataSerializer extends BaseDataSerializer implements IDataSerializer  {
 		

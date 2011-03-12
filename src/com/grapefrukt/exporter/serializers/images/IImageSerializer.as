@@ -32,7 +32,7 @@ package com.grapefrukt.exporter.serializers.images {
 	
 	/**
 	 * ...
-	 * @author Martin Jonasson (m@grapefrukt.com)
+	 * @author Martin Jonasson, m@grapefrukt.com
 	 */
 	public interface IImageSerializer {
 		function serialize(bitmapData:BitmapData):ByteArray;
