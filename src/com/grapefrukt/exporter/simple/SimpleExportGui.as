@@ -8,7 +8,7 @@ package com.grapefrukt.exporter.simple {
 	
 	/**
 	 * ...
-	 * @author Martin Jonasson (m@grapefrukt.com)
+	 * @author Martin Jonasson, m@grapefrukt.com
 	 */
 	public class SimpleExportGui extends Sprite {
 		

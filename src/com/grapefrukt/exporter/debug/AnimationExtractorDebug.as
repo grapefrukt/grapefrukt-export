@@ -39,7 +39,7 @@ package com.grapefrukt.exporter.debug {
 	import flash.display.Sprite;
 	/**
 	 * ...
-	 * @author Martin Jonasson (m@grapefrukt.com)
+	 * @author Martin Jonasson, m@grapefrukt.com
 	 */
 	public class AnimationExtractorDebug {
 

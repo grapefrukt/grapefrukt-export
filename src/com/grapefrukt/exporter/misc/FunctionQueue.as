@@ -33,7 +33,7 @@ package com.grapefrukt.exporter.misc {
 	import flash.utils.Timer;
 	/**
 	 * ...
-	 * @author Martin Jonasson (m@grapefrukt.com)
+	 * @author Martin Jonasson, m@grapefrukt.com
 	 */
 	
 	[Event(name = "functionqueueevent_change", type = "com.grapefrukt.exporter.events.FunctionQueueEvent")]

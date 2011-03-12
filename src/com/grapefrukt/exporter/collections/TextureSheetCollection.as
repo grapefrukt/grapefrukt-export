@@ -30,7 +30,7 @@ package com.grapefrukt.exporter.collections {
 	import com.grapefrukt.exporter.textures.TextureSheet;
 	/**
 	 * ...
-	 * @author Martin Jonasson (m@grapefrukt.com)
+	 * @author Martin Jonasson, m@grapefrukt.com
 	 */
 	public class TextureSheetCollection{
 		

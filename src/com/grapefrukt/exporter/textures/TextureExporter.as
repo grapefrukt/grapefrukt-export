@@ -36,7 +36,7 @@ package com.grapefrukt.exporter.textures {
 	import flash.events.EventDispatcher;
 	/**
 	 * ...
-	 * @author Martin Jonasson (m@grapefrukt.com)
+	 * @author Martin Jonasson, m@grapefrukt.com
 	 */
 	public class TextureExporter extends EventDispatcher {
 		

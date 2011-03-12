@@ -32,7 +32,7 @@ package com.grapefrukt.exporter.textures {
 	import flash.geom.Rectangle;
 	/**
 	 * ...
-	 * @author Martin Jonasson (m@grapefrukt.com)
+	 * @author Martin Jonasson, m@grapefrukt.com
 	 */
 	public class Texture {
 		

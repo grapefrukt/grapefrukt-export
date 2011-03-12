@@ -31,7 +31,7 @@ package com.grapefrukt.exporter.filters {
 	
 	/**
 	 * ...
-	 * @author Martin Jonasson (m@grapefrukt.com)
+	 * @author Martin Jonasson, m@grapefrukt.com
 	 */
 	public interface IFilter {
 		function apply(data:ByteArray):ByteArray;

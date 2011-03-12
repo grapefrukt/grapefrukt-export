@@ -30,7 +30,7 @@ package com.grapefrukt.exporter.animations {
 	
 	/**
 	 * ...
-	 * @author Martin Jonasson (m@grapefrukt.com)
+	 * @author Martin Jonasson, m@grapefrukt.com
 	 */
 	
 	public class AnimationFrame {

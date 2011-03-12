@@ -41,8 +41,9 @@ package com.grapefrukt.exporter.simple {
 	import flash.events.MouseEvent;
 	
 	/**
-	 * ...
-	 * @author Martin Jonasson (m@grapefrukt.com)
+	 * This class is mainly for usage in Flash Authoring, it encapsulates all the extracting/exporting into a 
+	 * easy to use package
+	 * @author Martin Jonasson, m@grapefrukt.com
 	 */
 	public class SimpleExport {
 		
@@ -59,6 +60,10 @@ package com.grapefrukt.exporter.simple {
 		private var _fonts				:FontSheetCollection;
 		private var _gui				:SimpleExportGui;
 		
+		/**
+		 * Creates the SimpleExport
+		 * @param	root	The GUI elements will be added to this DisplayObjectContainer
+		 */
 		public function SimpleExport(root:DisplayObjectContainer):void {
 			// this class is used to call functions on a timer, not exactly necessary on these small
 			// examples, but essential for larger exports (to avoid script timeouts and keep things responsive)

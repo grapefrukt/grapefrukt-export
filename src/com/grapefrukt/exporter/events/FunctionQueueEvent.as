@@ -3,7 +3,7 @@ package com.grapefrukt.exporter.events {
 	
 	/**
 	 * ...
-	 * @author Martin Jonasson (m@grapefrukt.com)
+	 * @author Martin Jonasson, m@grapefrukt.com
 	 */
 	public class FunctionQueueEvent extends Event {
 		
