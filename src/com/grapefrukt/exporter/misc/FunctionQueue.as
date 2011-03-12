@@ -27,32 +27,51 @@ or implied, of grapefrukt games.
 */
 
 package com.grapefrukt.exporter.misc {
+	import com.grapefrukt.exporter.events.FunctionQueueEvent;
+	import flash.events.EventDispatcher;
 	import flash.events.TimerEvent;
 	import flash.utils.Timer;
 	/**
 	 * ...
 	 * @author Martin Jonasson (m@grapefrukt.com)
 	 */
-	public class FunctionQueue {
+	
+	[Event(name = "functionqueueevent_change", type = "com.grapefrukt.exporter.events.FunctionQueueEvent")]
+	[Event(name = "functionqueueevent_complete", type = "com.grapefrukt.exporter.events.FunctionQueueEvent")]
+	
+	public class FunctionQueue extends EventDispatcher {
 		
 		private var _queue				:Vector.<Function>;
 		private var _queue_timer		:Timer;
+		private var _peak_length		:uint = 0;
 		
 		public function FunctionQueue() {
 			_queue = new Vector.<Function>;
 			
 			_queue_timer = new Timer(25, 0);
 			_queue_timer.addEventListener(TimerEvent.TIMER, handleQueueTimer);
-			_queue_timer.start();
 		}
 		
 		public function add(f:Function):void {
 			_queue.push(f);
+			if (length > _peak_length) _peak_length = length;
+			
+			_queue_timer.start();
+			dispatchEvent(new FunctionQueueEvent(FunctionQueueEvent.CHANGE));
 		}
 		
 		private function handleQueueTimer(e:TimerEvent):void {
-			if (_queue.length) _queue.shift()();
+			if (_queue.length) {
+				_queue.shift()();
+				dispatchEvent(new FunctionQueueEvent(FunctionQueueEvent.CHANGE));
+			} else {
+				_queue_timer.stop();
+				dispatchEvent(new FunctionQueueEvent(FunctionQueueEvent.COMPLETE));
+			}
 		}
+		
+		public function get length():uint { return _queue.length; }
+		public function get peakLength():uint { return _peak_length; }
 		
 	}
 
