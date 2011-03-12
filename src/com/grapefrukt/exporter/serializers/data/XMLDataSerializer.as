@@ -174,7 +174,7 @@ package com.grapefrukt.exporter.serializers.data {
 				
 		private function serializeFontSheet(sheet:FontSheet):XML {
 			var xml:XML = <FontData></FontData>;
-			xml.Texture = sheet.fontName;
+			xml.Texture = sheet.fontName + _imageSerializer.extension;
 			xml.LineHeight = sheet.lineHeight;
 			xml.CharSpace = sheet.charSpace;
 			xml.WordSpace = sheet.wordSpace;
