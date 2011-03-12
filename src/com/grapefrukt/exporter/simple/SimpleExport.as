@@ -140,21 +140,33 @@ package com.grapefrukt.exporter.simple {
 			_queue.add(function():void {
 				// by now, all the actual graphics are already output, but we still need to create the 
 				// xml file that contains all the sheet data
-				Logger.log("SimpleExport", "exporting sheet xml");
-				_file_serializer.serialize("sheets.xml", _data_serializer.serialize(_textures));
+				if (_textures.size) {
+					Logger.log("SimpleExport", "exporting sheet xml");
+					_file_serializer.serialize("sheets.xml", _data_serializer.serialize(_textures));
+				} else {
+					Logger.log("SimpleExport", "no textures to export");
+				}
 			});
 			
 			_queue.add(function():void {
-				Logger.log("SimpleExport", "exporting animation xml");
-				_file_serializer.serialize("animations.xml", _data_serializer.serialize(_animations));
+				
+				if (_animations.size) {
+					Logger.log("SimpleExport", "exporting animation xml");
+					_file_serializer.serialize("animations.xml", _data_serializer.serialize(_animations));
+				} else {
+					Logger.log("SimpleExport", "no animations to export");
+				}
+				
 			});
 			
 			_queue.add(function():void {
-				Logger.log("SimpleExport", "exporting font xml");
-				// by now, all the actual graphics are already output, but we still need to create the 
-				// xml file that contains all the sheet data
-				for each (var fontsheet:FontSheet in _fonts.sheets){
-					_file_serializer.serialize("fonts/" + fontsheet.fontName + ".xml", _data_serializer.serialize(fontsheet, true));
+				if (_fonts.size) {
+					Logger.log("SimpleExport", "exporting font xml");
+					for each (var fontsheet:FontSheet in _fonts.sheets){
+						_file_serializer.serialize("fonts/" + fontsheet.fontName + ".xml", _data_serializer.serialize(fontsheet, true));
+					}
+				} else {
+					Logger.log("SimpleExport", "no fonts to export");
 				}
 			});
 			
