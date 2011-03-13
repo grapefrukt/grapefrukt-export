@@ -63,8 +63,9 @@ package com.grapefrukt.exporter.extractors {
 			if (returnClass == null) returnClass = TextureSheet;
 			
 			var children:Vector.<Child>;
-			if (target is MovieClip) {
-				children = ChildFinder.findMultiframe(MovieClip(target));
+			var mc:MovieClip = target as MovieClip;
+			if (mc && mc.totalFrames > 1) {
+				children = ChildFinder.findMultiframe(mc);
 			} else {
 				children = ChildFinder.findSingle(target);
 			}
