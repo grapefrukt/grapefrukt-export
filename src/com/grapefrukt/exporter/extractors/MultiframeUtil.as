@@ -41,9 +41,9 @@ package com.grapefrukt.exporter.extractors {
 	
 	public class MultiframeUtil {
 		
-		public static const COLS_DEFAULT:uint = 4
 		
-		public static function merge(frames:Vector.<BitmapTexture>, columns:int = COLS_DEFAULT, returnClass:Class = null):BitmapTexture {
+		
+		public static function merge(frames:Vector.<BitmapTexture>, columns:int = Settings.defaultMultiframeCols, returnClass:Class = null):BitmapTexture {
 			var bounds		:Rectangle = frames[0].bounds.clone();
 			var frameCount	:int = frames.length;
 			var frame		:BitmapTexture;
