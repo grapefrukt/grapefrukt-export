@@ -28,6 +28,8 @@ or implied, of grapefrukt games.
 
 package com.grapefrukt.exporter.serializers.images {
 	import by.blooddy.crypto.image.PNGEncoder;
+	import com.grapefrukt.exporter.textures.BitmapTexture;
+	import com.grapefrukt.exporter.textures.TextureBase;
 	
 	import flash.display.BitmapData;
 	import flash.utils.ByteArray;
@@ -37,8 +39,10 @@ package com.grapefrukt.exporter.serializers.images {
 	 */
 	public class PNGImageSerializer implements IImageSerializer{
 		
-		public function serialize(bitmapData:BitmapData):ByteArray{
-			return PNGEncoder.encode(bitmapData);
+		public function serialize(texture:TextureBase):ByteArray {
+			var bt:BitmapTexture = texture as BitmapTexture;
+			if (!bt) throw new Error("PNGImageSerializer can only serialize BitmapTextures");
+			return PNGEncoder.encode(bt.bitmap);
 		}
 		
 		public function get extension():String{

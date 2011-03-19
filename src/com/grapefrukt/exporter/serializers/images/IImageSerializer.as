@@ -27,6 +27,7 @@ or implied, of grapefrukt games.
 */
 
 package com.grapefrukt.exporter.serializers.images {
+	import com.grapefrukt.exporter.textures.TextureBase;
 	import flash.display.BitmapData;
 	import flash.utils.ByteArray;
 	
@@ -35,7 +36,7 @@ package com.grapefrukt.exporter.serializers.images {
 	 * @author Martin Jonasson, m@grapefrukt.com
 	 */
 	public interface IImageSerializer {
-		function serialize(bitmapData:BitmapData):ByteArray;
+		function serialize(texture:TextureBase):ByteArray;
 		function get extension():String;
 	}
 	
