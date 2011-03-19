@@ -36,7 +36,7 @@ package basic {
 			// the image serializer compresses the images
 			_image_serializer 	= new PNGImageSerializer;
 			// the data serializer deals with outputting the metadata such as sheet definitions and animations
-			_data_serializer 	= new XMLDataSerializer(_image_serializer);
+			_data_serializer 	= new XMLDataSerializer;
 			// the file serializer is responsible for writing the files to disk, or in this case output a zip file
 			_file_serializer 	= new ZipFileSerializer;
 			
