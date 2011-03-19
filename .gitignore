@@ -1,4 +1,4 @@
-bin
+*.swf
 .settings
 .actionScriptProperties
 .project
