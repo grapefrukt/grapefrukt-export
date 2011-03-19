@@ -47,7 +47,7 @@ package com.grapefrukt.exporter.extractors {
 	 * @author Martin Jonasson, m@grapefrukt.com
 	 */
 	
-	public class TextureExtractor {
+	public class TextureExtractor extends ExtractorBase {
 		
 		/**
 		 * Extracts the DisplayObjectContainers children into textures and animation sheets
@@ -58,21 +58,9 @@ package com.grapefrukt.exporter.extractors {
 		 * @return	A TextureSheet containing the DisplayObjectContainers children
 		 */
 		public static function extract(sheet:DisplayObjectContainer, ignore:Array = null, respectScale:Boolean = false, returnClass:Class = null):TextureSheet {
-			Logger.log("TextureExtractor", "extracting", ChildFinder.getName(target));
-			
-			if (returnClass == null) returnClass = TextureSheet;
-			
-			var children:Vector.<Child>;
-			var mc:MovieClip = target as MovieClip;
-			if (mc && mc.totalFrames > 1) {
-				children = ChildFinder.findMultiframe(mc);
-			} else {
-				children = ChildFinder.findSingle(target);
-			}
-			
-			ChildFinder.filter(target, children, ignore);
-			
-			return childrenToSheet(target, children, respectScale, returnClass);
+			Logger.log("TextureExtractor", "extracting", ChildFinder.getName(sheet));
+			if (returnClass == null) returnClass = TextureSheet;		
+			return childrenToSheet(sheet, getChildren(sheet, ignore), respectScale, returnClass);
 		}
 		
 		public static function extractFromClasses(sheetName:String, ...rest):TextureSheet {
