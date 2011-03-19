@@ -44,12 +44,13 @@ package com.grapefrukt.exporter.extractors {
 		
 		
 		
-		public static function merge(frames:Vector.<BitmapTexture>, columns:int = Settings.defaultMultiframeCols, returnClass:Class = null):BitmapTexture {
+		public static function merge(frames:Vector.<BitmapTexture>, columns:int = -1, returnClass:Class = null):BitmapTexture {
 			var bounds		:Rectangle = frames[0].bounds.clone();
 			var frameCount	:int = frames.length;
 			var frame		:BitmapTexture;
 			
 			if (returnClass == null) returnClass = BitmapTexture;
+			if (columns == -1) columns = Settings.defaultMultiframeCols;
 			
 			// expand the bounds to cover all frames
 			for each(frame in frames) {
