@@ -6,16 +6,21 @@ package com.grapefrukt.exporter.extractors {
 	import com.codeazur.as3swf.tags.TagDefineSprite;
 	import com.codeazur.as3swf.tags.TagPlaceObject2;
 	import com.codeazur.as3swf.tags.TagSymbolClass;
-	import com.grapefrukt.exporter.vectors.VectorTexture;
-	import com.grapefrukt.exporter.vectors.VectorTextureSheet;
+	import com.grapefrukt.exporter.debug.Logger;
+	import com.grapefrukt.exporter.misc.Child;
+	import com.grapefrukt.exporter.textures.BitmapTexture;
+	import com.grapefrukt.exporter.textures.TextureSheet;
+	import com.grapefrukt.exporter.textures.VectorTexture;
 	import flash.display.DisplayObject;
+	import flash.display.DisplayObjectContainer;
 	import flash.display.LoaderInfo;
+	import flash.display.MovieClip;
 	import flash.utils.getQualifiedClassName;
 	/**
 	 * ...
 	 * @author Martin Jonasson (m@grapefrukt.com)
 	 */
-	public class VectorExtractor {
+	public class VectorExtractor extends ExtractorBase {
 		
 		private static var _swf		:SWF;
 		private static var _symbols	:Vector.<SWFSymbol>;
@@ -34,17 +39,31 @@ package com.grapefrukt.exporter.extractors {
 			_exporter = new SVGShapeExporter(_swf);
 		}
 		
-		public static function extract(target:DisplayObject):VectorTextureSheet {
-			
+		public static function extract(sheet:DisplayObjectContainer, ignore:Array = null):TextureSheet {
+			Logger.log("VectorExtractor", "extracting", ChildFinder.getName(sheet));
+			return childrenToSheet(sheet, getChildren(sheet, ignore));
 		}
 		
-		public static function extractSingle(target:DisplayObject):VectorTexture {
+		private static function childrenToSheet(target:DisplayObjectContainer, children:Vector.<Child>):TextureSheet {
+			var sheet:TextureSheet = new TextureSheet(ChildFinder.getName(target));
+			for each(var child:Child in children) {
+				var t:VectorTexture = extractSingle(child.name, target.getChildByName(child.name));
+				if(t) sheet.add(t);
+			}
+			return sheet;
+		}
+		
+		public static function extractSingle(name:String, target:DisplayObject):VectorTexture {
+			if (!_swf) throw new Error("No SWF bytecode parsed, run init() first")
+			
 			var name:String = getQualifiedClassName(target);
 			for (var i:int = 0; i < _symbols.length; i++) {
 				if (_symbols[i].name == name) {
 					var shapeTag:TagDefineShape = getSymbolShapeDefinition(_symbols[i])
 					
-					var vtexture:VectorTexture = new VectorTexture(target.name, )
+					var zindex:uint = 0;
+					if (target.parent) zindex = target.parent.getChildIndex(target);
+					var vtexture:VectorTexture = new VectorTexture(target.name, zindex, shapeTag);
 				}
 			}
 			return null;
