@@ -5,3 +5,4 @@ bin
 .flexLibProperties
 *.as3proj
 obj
+swc
