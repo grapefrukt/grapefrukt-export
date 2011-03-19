@@ -64,16 +64,7 @@ package com.grapefrukt.exporter.extractors {
 		}
 		
 		public static function extractFromClasses(sheetName:String, ...rest):TextureSheet {
-			var s:Sprite = new Sprite();
-			s.name = sheetName;
-			
-			for each (var item:Class in rest) {
-				var instance:Sprite = new item();
-				instance.name = ChildFinder.getName(instance);
-				s.addChild(instance);
-			}
-
-			return extract(s);
+			return extract(classesToSheetSprite(sheetName, rest));
 		}
 		
 		private static function childrenToSheet(target:DisplayObjectContainer, children:Vector.<Child>, respectScale:Boolean, returnClass:Class):TextureSheet {

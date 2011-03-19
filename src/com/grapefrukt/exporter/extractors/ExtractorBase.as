@@ -2,9 +2,10 @@ package com.grapefrukt.exporter.extractors {
 	import com.grapefrukt.exporter.misc.Child;
 	import flash.display.DisplayObjectContainer;
 	import flash.display.MovieClip;
+	import flash.display.Sprite;
 	/**
 	 * ...
-	 * @author Martin Jonasson (m@grapefrukt.com)
+	 * @author Martin Jonasson, m@grapefrukt.com
 	 */
 	public class ExtractorBase {
 		
@@ -20,6 +21,19 @@ package com.grapefrukt.exporter.extractors {
 			ChildFinder.filter(sheet, children, ignore)
 			
 			return children;
+		}
+		
+		protected static function classesToSheetSprite(sheetName:String, classes:Array):Sprite {
+			var s:Sprite = new Sprite();
+			s.name = sheetName;
+			
+			for each (var item:Class in classes) {
+				var instance:Sprite = new item();
+				instance.name = ChildFinder.getName(instance);
+				s.addChild(instance);
+			}
+
+			return s;
 		}
 		
 	}

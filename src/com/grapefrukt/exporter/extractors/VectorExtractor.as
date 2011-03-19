@@ -18,7 +18,7 @@ package com.grapefrukt.exporter.extractors {
 	import flash.utils.getQualifiedClassName;
 	/**
 	 * ...
-	 * @author Martin Jonasson (m@grapefrukt.com)
+	 * @author Martin Jonasson, m@grapefrukt.com
 	 */
 	public class VectorExtractor extends ExtractorBase {
 		
@@ -28,7 +28,6 @@ package com.grapefrukt.exporter.extractors {
 		
 		public static function init(loaderInfo:LoaderInfo):void {
 			_swf = new SWF(loaderInfo.bytes);
-			//trace(_swf);
 			var symboltag:TagSymbolClass;
 			for (var i:uint = 0; i < _swf.tags.length; i++) {
 				symboltag = _swf.tags[i] as TagSymbolClass;
@@ -42,6 +41,10 @@ package com.grapefrukt.exporter.extractors {
 		public static function extract(sheet:DisplayObjectContainer, ignore:Array = null):TextureSheet {
 			Logger.log("VectorExtractor", "extracting", ChildFinder.getName(sheet));
 			return childrenToSheet(sheet, getChildren(sheet, ignore));
+		}
+		
+		public static function extractFromClasses(sheetName:String, ...rest):TextureSheet {
+			return extract(classesToSheetSprite(sheetName, rest));
 		}
 		
 		private static function childrenToSheet(target:DisplayObjectContainer, children:Vector.<Child>):TextureSheet {
