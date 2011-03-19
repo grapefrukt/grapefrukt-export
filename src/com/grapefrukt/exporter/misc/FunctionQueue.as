@@ -52,6 +52,14 @@ package com.grapefrukt.exporter.misc {
 			_queue_timer.addEventListener(TimerEvent.TIMER, handleQueueTimer);
 		}
 		
+		public function stop():void {
+			_queue_timer.stop();
+		}
+		
+		public function start():void {
+			_queue_timer.start();
+		}
+		
 		public function add(f:Function):void {
 			_queue.push(f);
 			if (length > _peak_length) _peak_length = length;
