@@ -66,7 +66,7 @@ package com.grapefrukt.exporter.extractors {
 					
 					var zindex:uint = 0;
 					if (target.parent) zindex = target.parent.getChildIndex(target);
-					var vtexture:VectorTexture = new VectorTexture(target.name, zindex, shapeTag);
+					return new VectorTexture(target.name, zindex, shapeTag);
 				}
 			}
 			return null;
@@ -84,6 +84,8 @@ package com.grapefrukt.exporter.extractors {
 			}
 			return null;
 		}
+		
+		static public function get swf():SWF { return _swf; }
 		
 	}
 
