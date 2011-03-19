@@ -32,8 +32,8 @@ package com.grapefrukt.exporter.textures {
 	import com.grapefrukt.exporter.misc.FunctionQueue;
 	import com.grapefrukt.exporter.serializers.files.IFileSerializer;
 	import com.grapefrukt.exporter.serializers.images.IImageSerializer;
-	
 	import flash.events.EventDispatcher;
+	
 	/**
 	 * ...
 	 * @author Martin Jonasson, m@grapefrukt.com
@@ -43,16 +43,18 @@ package com.grapefrukt.exporter.textures {
 		private var _queue				:FunctionQueue;
 		private var _image_serializer	:IImageSerializer;
 		private var _file_serializer	:IFileSerializer;
+		private var _vector_serializer	:IImageSerializer;
 		
-		public function TextureExporter(queue:FunctionQueue, imageSerializer:IImageSerializer, fileSerializer:IFileSerializer) {
-			_queue = queue;
-			_image_serializer = imageSerializer;
-			_file_serializer = fileSerializer;
+		public function TextureExporter(queue:FunctionQueue, imageSerializer:IImageSerializer, fileSerializer:IFileSerializer, vectorSerializer:IImageSerializer = null) {
+			_queue 				= queue;
+			_image_serializer 	= imageSerializer;
+			_file_serializer 	= fileSerializer;
+			_vector_serializer	= vectorSerializer;
 		}
 		
 		public function queueCollection(textureSheetCollection:TextureSheetCollection):void {		
 			for each (var sheet:TextureSheet in textureSheetCollection.sheets) {
-				for each (var texture:BitmapTexture in sheet.textures) {
+				for each (var texture:TextureBase in sheet.textures) {
 					// if this isn't the textures' parent sheet, we skip it.
 					if (sheet != texture.sheet) {
 						//Logger.log("TextureExporter", "skipping reparented texture", "texture is added to a texture sheet that isn't it's parent", Logger.NOTICE);
@@ -64,10 +66,15 @@ package com.grapefrukt.exporter.textures {
 			}
 		}
 		
-		public function queue(texture:BitmapTexture):void {
+		public function queue(texture:TextureBase):void {
 			_queue.add(function():void {
 				Logger.log("TextureExporter", "compressing: " + texture.filenameWithPath, "", Logger.NOTICE);
-				_file_serializer.serialize(texture.filenameWithPath + _image_serializer.extension, _image_serializer.serialize(texture.bitmap));
+				if (texture is VectorTexture) {
+					if (!_vector_serializer) throw new Error("Cannot serialize vector data without a vector serializer");
+					_file_serializer.serialize(texture.filenameWithPath + _vector_serializer.extension, _vector_serializer.serialize(texture));
+				} else {
+					_file_serializer.serialize(texture.filenameWithPath + _image_serializer.extension, _image_serializer.serialize(texture));
+				}
 			});
 		}
 		
