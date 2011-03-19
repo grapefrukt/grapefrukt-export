@@ -100,8 +100,10 @@ package vector {
 				var classesToSheetSmoke:TextureSheet = VectorExtractor.extractFromClasses("smoke", SmokeParticle1, SmokeParticle2, SmokeParticle3, SmokeParticle4);
 				// this variation also figures out the names for you, if you don't like the naming scheme, feel free to change it!
 				
-				
 				_textures.add(classesToSheetSmoke);
+				
+				// let's try adding a complex image too for good measure.
+				_textures.add(VectorExtractor.extractFromClasses("tomundtfrank", TomUndtFrank));
 				
 			});
 			
