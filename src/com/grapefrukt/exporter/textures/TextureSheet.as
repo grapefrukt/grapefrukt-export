@@ -34,30 +34,30 @@ package com.grapefrukt.exporter.textures {
 	public class TextureSheet {
 		
 		protected var _name:String;
-		protected var _textures:Vector.<Texture>;
+		protected var _textures:Vector.<TextureBase>;
 		
 		public function TextureSheet(name:String) {
 			_name = name;
-			_textures = new Vector.<Texture>;
+			_textures = new Vector.<TextureBase>;
 		}
 		
-		public function add(texture:Texture):void {
+		public function add(texture:TextureBase):void {
 			texture.sheet = this;
 			_textures.push(texture);
 		}
 		
-		public function addExternal(texture:Texture):void {
+		public function addExternal(texture:TextureBase):void {
 			_textures.push(texture);
 		}
 		
-		public function getTexture(name:String):Texture {
-			for each(var t:Texture in _textures) {
+		public function getTexture(name:String):TextureBase {
+			for each(var t:TextureBase in _textures) {
 				if (t.name == name) return t;
 			}
 			return null;
 		}
 		
-		public function removeTexture(name:String):Texture {
+		public function removeTexture(name:String):TextureBase {
 			for (var i:int = 0; i < _textures.length; i++) {
 				if (_textures[i].name == name) {
 					return _textures.splice(i, 1)[0];
@@ -70,14 +70,14 @@ package com.grapefrukt.exporter.textures {
 			_textures = _textures.sort(_sort_textures);
 		}
 		
-		public function get textures():Vector.<Texture> { return _textures; }
+		public function get textures():Vector.<TextureBase> { return _textures; }
 		
 		public function get name():String { return _name; }
 		public function set name(value:String):void {
 			_name = value;
 		}
 		
-		protected function _sort_textures(one:Texture, two:Texture):Number {
+		protected function _sort_textures(one:TextureBase, two:TextureBase):Number {
 			if (one.zIndex > two.zIndex) return -1;
 			if (one.zIndex < two.zIndex) return 1;
 			return 0;
