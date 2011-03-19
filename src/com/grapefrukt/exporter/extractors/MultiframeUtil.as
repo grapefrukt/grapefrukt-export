@@ -27,6 +27,7 @@ or implied, of grapefrukt games.
 */
 
 package com.grapefrukt.exporter.extractors {
+	import com.grapefrukt.exporter.settings.Settings;
 	import com.grapefrukt.exporter.textures.BitmapTexture;
 	import com.grapefrukt.exporter.textures.TextureSheet;
 	
@@ -85,7 +86,7 @@ package com.grapefrukt.exporter.extractors {
 				//var bounds:Rectangle = new Rectangle(texture.bounds.width * (i % COLS_DEFAULT), texture.bounds.height * Math.floor(i / COLS_DEFAULT), texture.bounds.width, texture.bounds.height);
 				var mtx:Matrix = new Matrix;
 				
-				mtx.translate(-texture.bounds.width * (i % COLS_DEFAULT), -texture.bounds.height * Math.floor(i / COLS_DEFAULT))
+				mtx.translate(-texture.bounds.width * (i % Settings.defaultMultiframeCols), -texture.bounds.height * Math.floor(i / Settings.defaultMultiframeCols))
 				
 				bmp.draw(texture.bitmap, mtx, null, null)
 				
