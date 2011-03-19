@@ -57,7 +57,7 @@ package com.grapefrukt.exporter.extractors {
 		 * @param	returnClass		Ignore this. Used internally to return FontSheets when so needed. 
 		 * @return	A TextureSheet containing the DisplayObjectContainers children
 		 */
-		public static function extract(target:DisplayObjectContainer, ignore:Array = null, respectScale:Boolean = false, returnClass:Class = null):TextureSheet {
+		public static function extract(sheet:DisplayObjectContainer, ignore:Array = null, respectScale:Boolean = false, returnClass:Class = null):TextureSheet {
 			Logger.log("TextureExtractor", "extracting", ChildFinder.getName(target));
 			
 			if (returnClass == null) returnClass = TextureSheet;
@@ -93,19 +93,18 @@ package com.grapefrukt.exporter.extractors {
 			for each(var child:Child in children) {
 				if (child.frame != 0) MovieClip(target).gotoAndStop(child.frame);
 				
-				var t:Texture = getAsTexture(child.name, target.getChildByName(child.name), respectScale);
+				var t:Texture = extractSingle(child.name, target.getChildByName(child.name), respectScale);
 				
 				if(t) sheet.add(t);
 			}
 			return sheet;
 		}
 		
-		private static function getAsTexture(name:String, target:DisplayObject, respectScale:Boolean):Texture {
+		private static function extractSingle(name:String, target:DisplayObject, respectScale:Boolean):Texture {
 			if (target as MovieClip && MovieClip(target).totalFrames > 1) {
 				return getAsTextureMultiframe(name, MovieClip(target), respectScale);
-			} else {
-				return getAsTextureSingle(name, target, respectScale);
 			}
+			return getAsTextureSingle(name, target, respectScale);
 		}
 		
 		private static function getAsTextureMultiframe(name:String, target:MovieClip, respectScale:Boolean):Texture {
