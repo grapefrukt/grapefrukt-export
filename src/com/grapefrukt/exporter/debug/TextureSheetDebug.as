@@ -27,7 +27,7 @@ or implied, of grapefrukt games.
 */
 
 package com.grapefrukt.exporter.debug {
-	import com.grapefrukt.exporter.textures.Texture;
+	import com.grapefrukt.exporter.textures.BitmapTexture;
 	import com.grapefrukt.exporter.textures.TextureSheet;
 	
 	import flash.display.Bitmap;
@@ -47,7 +47,7 @@ package com.grapefrukt.exporter.debug {
 			if(!s) s = new Sprite;
 			var label:TextField;
 			
-			for each (var texture:Texture in sheet.textures) {
+			for each (var texture:BitmapTexture in sheet.textures) {
 				label = new TextField();
 				label.x = 0;
 				label.y = s.getBounds(s).bottom;

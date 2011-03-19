@@ -52,7 +52,7 @@ package com.grapefrukt.exporter.textures {
 		
 		public function queueCollection(textureSheetCollection:TextureSheetCollection):void {		
 			for each (var sheet:TextureSheet in textureSheetCollection.sheets) {
-				for each (var texture:Texture in sheet.textures) {
+				for each (var texture:BitmapTexture in sheet.textures) {
 					// if this isn't the textures' parent sheet, we skip it.
 					if (sheet != texture.sheet) {
 						//Logger.log("TextureExporter", "skipping reparented texture", "texture is added to a texture sheet that isn't it's parent", Logger.NOTICE);
@@ -64,7 +64,7 @@ package com.grapefrukt.exporter.textures {
 			}
 		}
 		
-		public function queue(texture:Texture):void {
+		public function queue(texture:BitmapTexture):void {
 			_queue.add(function():void {
 				Logger.log("TextureExporter", "compressing: " + texture.filenameWithPath, "", Logger.NOTICE);
 				_file_serializer.serialize(texture.filenameWithPath + _image_serializer.extension, _image_serializer.serialize(texture.bitmap));

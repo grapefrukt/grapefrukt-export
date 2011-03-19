@@ -31,7 +31,7 @@ package com.grapefrukt.exporter.extractors {
 	import com.grapefrukt.exporter.debug.Logger;
 	import com.grapefrukt.exporter.misc.Child;
 	import com.grapefrukt.exporter.settings.Settings;
-	import com.grapefrukt.exporter.textures.Texture;
+	import com.grapefrukt.exporter.textures.BitmapTexture;
 	import com.grapefrukt.exporter.textures.TextureSheet;
 	import flash.display.Sprite;
 	
@@ -93,22 +93,22 @@ package com.grapefrukt.exporter.extractors {
 			for each(var child:Child in children) {
 				if (child.frame != 0) MovieClip(target).gotoAndStop(child.frame);
 				
-				var t:Texture = extractSingle(child.name, target.getChildByName(child.name), respectScale);
+				var t:BitmapTexture = extractSingle(child.name, target.getChildByName(child.name), respectScale);
 				
 				if(t) sheet.add(t);
 			}
 			return sheet;
 		}
 		
-		private static function extractSingle(name:String, target:DisplayObject, respectScale:Boolean):Texture {
+		private static function extractSingle(name:String, target:DisplayObject, respectScale:Boolean):BitmapTexture {
 			if (target as MovieClip && MovieClip(target).totalFrames > 1) {
 				return getAsTextureMultiframe(name, MovieClip(target), respectScale);
 			}
 			return getAsTextureSingle(name, target, respectScale);
 		}
 		
-		private static function getAsTextureMultiframe(name:String, target:MovieClip, respectScale:Boolean):Texture {
-			var frames:Vector.<Texture> = new Vector.<Texture>;
+		private static function getAsTextureMultiframe(name:String, target:MovieClip, respectScale:Boolean):BitmapTexture {
+			var frames:Vector.<BitmapTexture> = new Vector.<BitmapTexture>;
 			for (var frameIndex:int = 1; frameIndex <= target.totalFrames; frameIndex++) {
 				target.gotoAndStop(frameIndex);
 				frames.push(getAsTextureSingle(name, target, respectScale));
@@ -117,7 +117,7 @@ package com.grapefrukt.exporter.extractors {
 			return MultiframeUtil.merge(frames);
 		}
 		
-		public static function getAsTextureSingle(name:String, target:DisplayObject, respectScale:Boolean):Texture {
+		public static function getAsTextureSingle(name:String, target:DisplayObject, respectScale:Boolean):BitmapTexture {
 			var bounds:Rectangle = target.getBounds(target);
 			var compoundScale:Number = Settings.scaleFactor;
 			
@@ -162,7 +162,7 @@ package com.grapefrukt.exporter.extractors {
 				Logger.log("TextureExtractor", "crop made tiny texture in " + name, "was: " + bounds + " became: " + crop_rect, Logger.ERROR);
 				
 				// returns the uncropped texture
-				return new Texture(name, bitmap, bounds, zindex);
+				return new BitmapTexture(name, bitmap, bounds, zindex);
 			}
 			
 			// add a margin to the edges to prevent wierd smoothing issues
@@ -185,7 +185,7 @@ package com.grapefrukt.exporter.extractors {
 			if (target.parent) zindex = target.parent.getChildIndex(target);
 			
 			var isMask:Boolean = name.toLowerCase().indexOf('mask') == 0;
-			return new Texture(name, crop_bitmap, bounds, zindex, 1, isMask);
+			return new BitmapTexture(name, crop_bitmap, bounds, zindex, 1, isMask);
 		}
 		
 	}

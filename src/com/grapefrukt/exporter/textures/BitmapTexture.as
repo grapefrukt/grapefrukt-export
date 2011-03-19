@@ -34,26 +34,21 @@ package com.grapefrukt.exporter.textures {
 	 * ...
 	 * @author Martin Jonasson, m@grapefrukt.com
 	 */
-	public class Texture {
+	public class BitmapTexture extends TextureBase {
 		
-		private var _name				:String;
 		private var _bitmap				:BitmapData;
 		private var _bounds				:Rectangle;
 		private var _frame_count		:int;
-		private var _z_index			:int = 0;
 		private var _sheet				:TextureSheet;
-		private var _is_mask			:Boolean = false;
 		
-		public function Texture(name:String, bitmap:BitmapData, bounds:Rectangle, zIndex:int, frameCount:int = 1, isMask:Boolean = false) {
-			_name = name;
+		
+		public function BitmapTexture(name:String, bitmap:BitmapData, bounds:Rectangle, zIndex:int, frameCount:int = 1, isMask:Boolean = false) {
+			super(name, zIndex, isMask);
 			_bitmap = bitmap;
 			_bounds = bounds;
-			_z_index = zIndex;
 			_frame_count = frameCount;
-			_is_mask = isMask;
 		}
 		
-		public function get name():String { return _name; }
 		public function get bitmap():BitmapData { return _bitmap; }
 		
 		public function get registrationPoint():Point { 
@@ -77,10 +72,6 @@ package com.grapefrukt.exporter.textures {
 		public function get filenameWithPath():String {
 			return sheet.name + "/" + name;
 		}
-		
-		public function get zIndex():int { return _z_index; }
-		
-		public function get isMask():Boolean { return _is_mask; }
 		
 	}
 

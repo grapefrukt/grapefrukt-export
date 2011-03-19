@@ -29,7 +29,7 @@ or implied, of grapefrukt games.
 package com.grapefrukt.exporter.debug {
 	import com.grapefrukt.exporter.animations.Animation;
 	import com.grapefrukt.exporter.animations.AnimationFrame;
-	import com.grapefrukt.exporter.textures.Texture;
+	import com.grapefrukt.exporter.textures.BitmapTexture;
 	import com.grapefrukt.exporter.textures.TextureSheet;
 	
 	import flash.display.Bitmap;
@@ -46,7 +46,7 @@ package com.grapefrukt.exporter.debug {
 		public static function createSkeleton(animation:Animation, sheet:TextureSheet):Sprite {
 			var skeleton:Sprite = new Sprite;
 			for each (var partname:String in animation.partNames) {
-				var texture:Texture = sheet.getTexture(partname);
+				var texture:BitmapTexture = sheet.getTexture(partname);
 				var part:Bitmap;
 				if(texture){
 					part = new Bitmap(texture.bitmap, "auto", true);
@@ -78,7 +78,7 @@ package com.grapefrukt.exporter.debug {
 			
 			var zarray:Array = [];
 			for each (partname in animation.partNames) {
-				var t:Texture = sheet.getTexture(partname);
+				var t:BitmapTexture = sheet.getTexture(partname);
 				zarray.push( { part : skeleton.getChildByName(partname), z : t ? t.zIndex : 0 } );
 			}
 			zarray.sortOn("z", Array.NUMERIC);

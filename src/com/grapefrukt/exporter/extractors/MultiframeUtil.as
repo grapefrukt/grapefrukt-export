@@ -27,7 +27,7 @@ or implied, of grapefrukt games.
 */
 
 package com.grapefrukt.exporter.extractors {
-	import com.grapefrukt.exporter.textures.Texture;
+	import com.grapefrukt.exporter.textures.BitmapTexture;
 	import com.grapefrukt.exporter.textures.TextureSheet;
 	
 	import flash.display.BitmapData;
@@ -43,12 +43,12 @@ package com.grapefrukt.exporter.extractors {
 		
 		public static const COLS_DEFAULT:uint = 4
 		
-		public static function merge(frames:Vector.<Texture>, columns:int = COLS_DEFAULT, returnClass:Class = null):Texture {
+		public static function merge(frames:Vector.<BitmapTexture>, columns:int = COLS_DEFAULT, returnClass:Class = null):BitmapTexture {
 			var bounds		:Rectangle = frames[0].bounds.clone();
 			var frameCount	:int = frames.length;
-			var frame		:Texture;
+			var frame		:BitmapTexture;
 			
-			if (returnClass == null) returnClass = Texture;
+			if (returnClass == null) returnClass = BitmapTexture;
 			
 			// expand the bounds to cover all frames
 			for each(frame in frames) {
@@ -76,7 +76,7 @@ package com.grapefrukt.exporter.extractors {
 			return new returnClass(frames[0].name, bitmap, bounds, frames[0].zIndex, frameCount);
 		}
 		
-		public static function split(texture:Texture, sheet:TextureSheet = null):TextureSheet {
+		public static function split(texture:BitmapTexture, sheet:TextureSheet = null):TextureSheet {
 			if (!sheet) sheet = new TextureSheet(texture.name);
 			
 			for (var i:int = 0; i < texture.frameCount; i++) {
@@ -89,7 +89,7 @@ package com.grapefrukt.exporter.extractors {
 				
 				bmp.draw(texture.bitmap, mtx, null, null)
 				
-				var newtex:Texture = new Texture(texture.name + "_" + i, bmp, texture.bounds, 0);
+				var newtex:BitmapTexture = new BitmapTexture(texture.name + "_" + i, bmp, texture.bounds, 0);
 				
 				sheet.add(newtex);
 			}
