@@ -48,12 +48,6 @@ package com.grapefrukt.exporter.serializers.data {
 	 */
 	public class XMLDataSerializer extends BaseDataSerializer implements IDataSerializer  {
 		
-		private var _imageSerializer:IImageSerializer;
-		
-		public function XMLDataSerializer(imageSerializer:IImageSerializer) {
-			_imageSerializer = imageSerializer;
-		}
-		
 		public function serialize(target:*, useFilters:Boolean = false):ByteArray {
 			var xml:XML = _serialize(target);
 			var ba:ByteArray = new ByteArray;
@@ -86,8 +80,8 @@ package com.grapefrukt.exporter.serializers.data {
 		private function serializeVectorTexture(texture:VectorTexture):XML {
 			var xml:XML = <VectorTexture></VectorTexture>;
 			xml.@name 	= texture.name;
-			xml.@path 	= texture.filenameWithPath + _imageSerializer.extension;
-			if (texture.isMask) 		xml.@mask 		= texture.isMask ? "1" : "0";
+			xml.@path 	= texture.filenameWithPath;
+			if (texture.isMask) xml.@mask = texture.isMask ? "1" : "0";
 			return xml;
 		}
 		
@@ -118,7 +112,7 @@ package com.grapefrukt.exporter.serializers.data {
 			xml.@name 	= texture.name;
 			xml.@width 	= Math.round(texture.bounds.width);
 			xml.@height = Math.round(texture.bounds.height);
-			xml.@path 	= texture.filenameWithPath + _imageSerializer.extension;
+			xml.@path 	= texture.filenameWithPath;
 			
 			xml.@registrationPointX = texture.registrationPoint.x.toFixed(2);
 			xml.@registrationPointY = texture.registrationPoint.y.toFixed(2);
@@ -184,7 +178,7 @@ package com.grapefrukt.exporter.serializers.data {
 				
 		private function serializeFontSheet(sheet:FontSheet):XML {
 			var xml:XML = <FontData></FontData>;
-			xml.Texture = sheet.fontName + _imageSerializer.extension;
+			xml.Texture = sheet.fontName;
 			xml.LineHeight = sheet.lineHeight;
 			xml.CharSpace = sheet.charSpace;
 			xml.WordSpace = sheet.wordSpace;

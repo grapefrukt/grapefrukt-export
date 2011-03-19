@@ -61,20 +61,22 @@ package com.grapefrukt.exporter.textures {
 						continue;
 					}
 					
-					queue(texture);
+					if (texture is VectorTexture) {
+						if (!_vector_serializer) throw new Error("Cannot serialize vector data without a vector serializer");
+						queue(texture, _vector_serializer);
+					} else {
+						queue(texture, _image_serializer);
+					}
+					
 				}
 			}
 		}
 		
-		public function queue(texture:TextureBase):void {
+		public function queue(texture:TextureBase, serializer:IImageSerializer):void {
 			_queue.add(function():void {
+				texture.extension = serializer.extension;
 				Logger.log("TextureExporter", "compressing: " + texture.filenameWithPath, "", Logger.NOTICE);
-				if (texture is VectorTexture) {
-					if (!_vector_serializer) throw new Error("Cannot serialize vector data without a vector serializer");
-					_file_serializer.serialize(texture.filenameWithPath + _vector_serializer.extension, _vector_serializer.serialize(texture));
-				} else {
-					_file_serializer.serialize(texture.filenameWithPath + _image_serializer.extension, _image_serializer.serialize(texture));
-				}
+				_file_serializer.serialize(texture.filenameWithPath + serializer.extension, serializer.serialize(texture));
 			});
 		}
 		
