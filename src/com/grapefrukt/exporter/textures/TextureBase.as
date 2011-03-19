@@ -20,6 +20,10 @@ package com.grapefrukt.exporter.textures {
 		public function get zIndex():int { return _z_index; }
 		public function get isMask():Boolean { return _is_mask; }
 		
+		public function get filenameWithPath():String {
+			return sheet.name + "/" + name;
+		}
+		
 		public function get sheet():TextureSheet { return _sheet; }
 		public function set sheet(value:TextureSheet):void {
 			_sheet = value;

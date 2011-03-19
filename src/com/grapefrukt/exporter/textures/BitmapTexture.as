@@ -62,9 +62,6 @@ package com.grapefrukt.exporter.textures {
 		
 		public function get frameCount():int { return _frame_count; }
 
-		public function get filenameWithPath():String {
-			return sheet.name + "/" + name;
-		}
 		
 	}
 
