@@ -41,14 +41,14 @@ package com.grapefrukt.exporter.textures {
 		private var _word_space		:int = 0;
 		
 		private var _merged_texture		:BitmapTexture;
-		private var _merged_texture_v	:Vector.<BitmapTexture>;
+		private var _merged_texture_v	:Vector.<TextureBase>;
 		
 		public function FontSheet(name:String) {
 			super(name);
 		}
 		
 		public function merge(columns:int = 16):void{
-			var bounds		:Rectangle = _textures[0].bounds.clone();
+			var bounds		:Rectangle = BitmapTexture(_textures[0]).bounds.clone();
 			var texture		:BitmapTexture;
 			// expand the bounds to cover all textures
 			for each(texture in _textures) {
@@ -86,11 +86,11 @@ package com.grapefrukt.exporter.textures {
 			
 		}
 		
-		override public function get textures():Vector.<BitmapTexture> { 
+		override public function get textures():Vector.<TextureBase> { 
 			return _merged_texture_v; 
 		}
 		
-		public function get unmergedTextures():Vector.<BitmapTexture> {
+		public function get unmergedTextures():Vector.<TextureBase> {
 			return super.textures;
 		}
 		
