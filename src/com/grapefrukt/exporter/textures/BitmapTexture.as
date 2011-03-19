@@ -39,7 +39,6 @@ package com.grapefrukt.exporter.textures {
 		private var _bitmap				:BitmapData;
 		private var _bounds				:Rectangle;
 		private var _frame_count		:int;
-		private var _sheet				:TextureSheet;
 		
 		
 		public function BitmapTexture(name:String, bitmap:BitmapData, bounds:Rectangle, zIndex:int, frameCount:int = 1, isMask:Boolean = false) {
@@ -62,13 +61,7 @@ package com.grapefrukt.exporter.textures {
 		}
 		
 		public function get frameCount():int { return _frame_count; }
-		
-		public function get sheet():TextureSheet { return _sheet; }
-		
-		public function set sheet(value:TextureSheet):void {
-			_sheet = value;
-		}
-		
+
 		public function get filenameWithPath():String {
 			return sheet.name + "/" + name;
 		}
