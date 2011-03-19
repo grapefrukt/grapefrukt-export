@@ -36,7 +36,9 @@ package com.grapefrukt.exporter.serializers.data {
 	import com.grapefrukt.exporter.serializers.images.IImageSerializer;
 	import com.grapefrukt.exporter.textures.FontSheet;
 	import com.grapefrukt.exporter.textures.BitmapTexture;
+	import com.grapefrukt.exporter.textures.TextureBase;
 	import com.grapefrukt.exporter.textures.TextureSheet;
+	import com.grapefrukt.exporter.textures.VectorTexture;
 	
 	import flash.utils.ByteArray;
 	
@@ -68,7 +70,8 @@ package com.grapefrukt.exporter.serializers.data {
 		private function _serialize(target:*):XML {
 			if (target is FontSheet)	 			return serializeFontSheet(FontSheet(target));
 			
-			if (target is BitmapTexture) 					return serializeTexture(BitmapTexture(target));
+			if (target is VectorTexture) 			return serializeVectorTexture(VectorTexture(target));
+			if (target is BitmapTexture) 			return serializeTexture(BitmapTexture(target));
 			if (target is TextureSheet) 			return serializeTextureSheet(TextureSheet(target));
 			if (target is TextureSheetCollection) 	return serializeTextureSheetCollection(TextureSheetCollection(target));
 			
@@ -80,6 +83,13 @@ package com.grapefrukt.exporter.serializers.data {
 			return null;
 		}
 		
+		private function serializeVectorTexture(texture:VectorTexture):XML {
+			var xml:XML = <VectorTexture></VectorTexture>;
+			xml.@name 	= texture.name;
+			xml.@path 	= texture.filenameWithPath + _imageSerializer.extension;
+			if (texture.isMask) 		xml.@mask 		= texture.isMask ? "1" : "0";
+			return xml;
+		}
 		
 		private function serializeTextureSheetCollection(collection:TextureSheetCollection):XML {
 			collection.sort();
@@ -96,7 +106,7 @@ package com.grapefrukt.exporter.serializers.data {
 			
 			sheet.sort();
 			
-			for each(var texture:BitmapTexture in sheet.textures) {
+			for each(var texture:TextureBase in sheet.textures) {
 				xml.appendChild(_serialize(texture))
 			}
 			
