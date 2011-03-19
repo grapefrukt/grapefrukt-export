@@ -46,7 +46,7 @@ package com.grapefrukt.exporter.debug {
 		public static function createSkeleton(animation:Animation, sheet:TextureSheet):Sprite {
 			var skeleton:Sprite = new Sprite;
 			for each (var partname:String in animation.partNames) {
-				var texture:BitmapTexture = sheet.getTexture(partname);
+				var texture:BitmapTexture = sheet.getTexture(partname) as BitmapTexture;
 				var part:Bitmap;
 				if(texture){
 					part = new Bitmap(texture.bitmap, "auto", true);
@@ -78,7 +78,7 @@ package com.grapefrukt.exporter.debug {
 			
 			var zarray:Array = [];
 			for each (partname in animation.partNames) {
-				var t:BitmapTexture = sheet.getTexture(partname);
+				var t:BitmapTexture = sheet.getTexture(partname) as BitmapTexture;
 				zarray.push( { part : skeleton.getChildByName(partname), z : t ? t.zIndex : 0 } );
 			}
 			zarray.sortOn("z", Array.NUMERIC);
