@@ -27,21 +27,16 @@ or implied, of grapefrukt games.
 */
 
 package com.grapefrukt.exporter.serializers.images {
-	import com.codeazur.as3swf.data.consts.BitmapFormat;
-	import com.codeazur.as3swf.utils.MatrixUtils;
 	import com.grapefrukt.exporter.misc.MaxRectsBinPack;
 	import com.grapefrukt.exporter.serializers.files.IFileSerializer;
-	import com.grapefrukt.exporter.serializers.files.ZipFileAtlasSerializer;
 	import com.grapefrukt.exporter.textures.BitmapTexture;
 	import com.grapefrukt.exporter.textures.TextureBase;
 	import flash.display.BitmapData;
-	import flash.geom.Matrix;
-	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	import flash.utils.ByteArray;
 	/**
 	 * ...
-	 * @author Martin Jonasson (m@grapefrukt.com)
+	 * @author Martin Jonasson, m@grapefrukt.com
 	 */
 	public class PNGAtlasPackerSerializer extends PNGImageSerializer {
 		
@@ -68,7 +63,7 @@ package com.grapefrukt.exporter.serializers.images {
 			var rect:Rectangle;
 			
 			if (bt.bounds.width > _atlas_width || bt.bounds.height > _atlas_height) {
-				throw new Error("Texture " + bt.name + "(" + bt.bounds.width + "x" + bt.bounds.height + ") is too big to fit in atlas (" + _atlas_width + "x" + _atlas_height + ")");
+				throw new Error("Texture " + bt.name + "(" + bt.bitmap.rect.width + "x" + bt.bitmap.rect.height + ") is too big to fit in atlas (" + _atlas_width + "x" + _atlas_height + ")");
 				return;
 			}
 			
@@ -88,7 +83,7 @@ package com.grapefrukt.exporter.serializers.images {
 					binWasAdded = true;
 				}
 				
-				rect = _binpackers[index].insert(bt.bounds.width, bt.bounds.height, MaxRectsBinPack.METHOD_RECT_BEST_AREA_FIT);
+				rect = _binpackers[index].insert(bt.bitmap.rect.width, bt.bitmap.rect.height, MaxRectsBinPack.METHOD_RECT_BEST_AREA_FIT);
 			}
 			
 			_texture_rects.push(new TextureRect(bt, rect, index));
