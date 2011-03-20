@@ -81,7 +81,7 @@ package com.grapefrukt.exporter.textures {
 			
 			_merged_texture = new BitmapTexture(super.name, bmp, bmp.rect, 0);
 			_merged_texture.sheet = this;
-			_merged_texture_v = new Vector.<BitmapTexture>;
+			_merged_texture_v = new Vector.<TextureBase>;
 			_merged_texture_v.push(_merged_texture);
 			
 		}
