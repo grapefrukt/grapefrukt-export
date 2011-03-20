@@ -80,6 +80,12 @@ package com.grapefrukt.exporter.extractors {
 				}
 			}
 		}
+		
+		public static function nameChildren(target:DisplayObjectContainer):void {
+			for (var i:int = 0; i < target.numChildren; i++) {
+				target.getChildAt(i).name = getName(target.getChildAt(i));
+			}
+		}
 				
 		public static function getName(instance:Object):String {
 			var name:String;
