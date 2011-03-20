@@ -31,23 +31,30 @@ package com.grapefrukt.exporter.serializers.files {
 	import flash.utils.ByteArray;
 	/**
 	 * ...
-	 * @author Martin Jonasson (m@grapefrukt.com)
+	 * @author Martin Jonasson, m@grapefrukt.com
 	 */
-	public class ZipFileAtlasSerializer extends ZipFileSerializer {
+	public class AtlasWrapperSerializer implements IFileSerializer {
 		
-		private var _image_serializer:PNGAtlasPackerSerializer;
+		private var _file_serializer	:IFileSerializer;
+		private var _image_serializer	:PNGAtlasPackerSerializer;
 		
-		public function ZipFileAtlasSerializer(imageSerializer:PNGAtlasPackerSerializer) {
+		/**
+		 * This file-out wrapper is needed to get the atlas output working
+		 * @param	fileSerializer	This is the actual file serializer that will be used
+		 * @param	imageSerializer	The atlas wrapper needs to talk to your atlas packer
+		 */
+		public function AtlasWrapperSerializer(fileSerializer:IFileSerializer, imageSerializer:PNGAtlasPackerSerializer) {
+			_file_serializer = fileSerializer;
 			_image_serializer = imageSerializer;
 		}
 		
-		override public function serialize(filename:String, file:ByteArray):void {
-			if (file) super.serialize(filename, file);
+		public function serialize(filename:String, file:ByteArray):void {
+			if (file) _file_serializer.serialize(filename, file);
 		}
 		
-		override public function output():void{
+		public function output():void{
 			_image_serializer.output(this);
-			super.output();
+			_file_serializer.output();
 		}
 		
 	}
