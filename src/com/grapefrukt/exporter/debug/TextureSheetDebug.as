@@ -28,6 +28,7 @@ or implied, of grapefrukt games.
 
 package com.grapefrukt.exporter.debug {
 	import com.grapefrukt.exporter.textures.BitmapTexture;
+	import com.grapefrukt.exporter.textures.MultiframeBitmapTexture;
 	import com.grapefrukt.exporter.textures.TextureSheet;
 	
 	import flash.display.Bitmap;
@@ -57,7 +58,8 @@ package com.grapefrukt.exporter.debug {
 				label.text = texture.name;
 				s.addChild(label);
 				
-				if (texture.isMultiframe) label.appendText("\n" + texture.frameCount + " frames");
+				var mf:MultiframeBitmapTexture = texture as MultiframeBitmapTexture;
+				if (mf) label.appendText("\n" + mf.frameCount + " frames");
 				label.opaqueBackground = 0xffffff;
 				
 				var bmp:Bitmap = new Bitmap(texture.bitmap);

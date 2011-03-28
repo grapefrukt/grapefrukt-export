@@ -30,6 +30,7 @@ package com.grapefrukt.exporter.debug {
 	import com.grapefrukt.exporter.animations.Animation;
 	import com.grapefrukt.exporter.animations.AnimationFrame;
 	import com.grapefrukt.exporter.textures.BitmapTexture;
+	import com.grapefrukt.exporter.textures.MultiframeBitmapTexture;
 	import com.grapefrukt.exporter.textures.TextureSheet;
 	
 	import flash.display.Bitmap;
@@ -56,10 +57,11 @@ package com.grapefrukt.exporter.debug {
 					part.y = -100;
 				}
 				
-				if (texture && texture.frameCount > 1) {
+				var multiframe:MultiframeBitmapTexture = texture as MultiframeBitmapTexture;
+				if (multiframe) {
 					var mask:Shape = new Shape;
 					mask.graphics.beginFill(0);
-					mask.graphics.drawRect(texture.bounds.x, texture.bounds.y, texture.bounds.width, texture.bounds.height);
+					mask.graphics.drawRect(multiframe.bounds.x, multiframe.bounds.y, multiframe.frameBounds.width, multiframe.frameBounds.height);
 					bone.addChild(mask);
 					part.mask = mask;
 				}
