@@ -76,7 +76,7 @@ package com.grapefrukt.exporter.textures {
 			_queue.add(function():void {
 				texture.extension = serializer.extension;
 				Logger.log("TextureExporter", "compressing: " + texture.filenameWithPath, "", Logger.NOTICE);
-				_file_serializer.serialize(texture.filenameWithPath + serializer.extension, serializer.serialize(texture));
+				_file_serializer.serialize(texture.filenameWithPath, serializer.serialize(texture));
 			});
 		}
 		
