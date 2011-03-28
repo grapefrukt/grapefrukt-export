@@ -38,14 +38,11 @@ package com.grapefrukt.exporter.textures {
 		
 		private var _bitmap				:BitmapData;
 		private var _bounds				:Rectangle;
-		private var _frame_count		:int;
 		
-		
-		public function BitmapTexture(name:String, bitmap:BitmapData, bounds:Rectangle, zIndex:int, frameCount:int = 1, isMask:Boolean = false) {
+		public function BitmapTexture(name:String, bitmap:BitmapData, bounds:Rectangle, zIndex:int, isMask:Boolean = false) {
 			super(name, zIndex, isMask);
 			_bitmap = bitmap;
 			_bounds = bounds;
-			_frame_count = frameCount;
 		}
 		
 		public function get bitmap():BitmapData { return _bitmap; }
@@ -55,13 +52,6 @@ package com.grapefrukt.exporter.textures {
 		}
 		
 		public function get bounds():Rectangle { return _bounds; }
-		
-		public function get isMultiframe():Boolean {
-			return _frame_count > 1;
-		}
-		
-		public function get frameCount():int { return _frame_count; }
-
 		
 	}
 

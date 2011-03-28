@@ -164,7 +164,7 @@ package com.grapefrukt.exporter.extractors {
 			if (target.parent) zindex = target.parent.getChildIndex(target);
 			
 			var isMask:Boolean = name.toLowerCase().indexOf('mask') == 0;
-			return new BitmapTexture(name, crop_bitmap, bounds, zindex, 1, isMask);
+			return new BitmapTexture(name, crop_bitmap, bounds, zindex, isMask);
 		}
 		
 	}

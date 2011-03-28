@@ -29,6 +29,7 @@ or implied, of grapefrukt games.
 package com.grapefrukt.exporter.extractors {
 	import com.grapefrukt.exporter.settings.Settings;
 	import com.grapefrukt.exporter.textures.BitmapTexture;
+	import com.grapefrukt.exporter.textures.MultiframeBitmapTexture;
 	import com.grapefrukt.exporter.textures.TextureSheet;
 	
 	import flash.display.BitmapData;
@@ -42,14 +43,11 @@ package com.grapefrukt.exporter.extractors {
 	
 	public class MultiframeUtil {
 		
-		
-		
-		public static function merge(frames:Vector.<BitmapTexture>, columns:int = -1, returnClass:Class = null):BitmapTexture {
+		public static function merge(frames:Vector.<BitmapTexture>, columns:int = -1):MultiframeBitmapTexture {
 			var bounds		:Rectangle = frames[0].bounds.clone();
 			var frameCount	:int = frames.length;
 			var frame		:BitmapTexture;
 			
-			if (returnClass == null) returnClass = BitmapTexture;
 			if (columns == -1) columns = Settings.defaultMultiframeCols;
 			
 			// expand the bounds to cover all frames
@@ -75,10 +73,16 @@ package com.grapefrukt.exporter.extractors {
 				bitmap.draw(frame.bitmap, matrix, null, null, frameBounds);
 			}
 			
-			return new returnClass(frames[0].name, bitmap, bounds, frames[0].zIndex, frameCount);
+			frameBounds.x = 0;
+			frameBounds.y = 0;
+			
+			bounds.width = bitmap.width;
+			bounds.height = bitmap.height;
+			
+			return new MultiframeBitmapTexture(frames[0].name, bitmap, bounds, frames[0].zIndex, frameCount, frameBounds.clone(), cols, frames[0].isMask);
 		}
 		
-		public static function split(texture:BitmapTexture, sheet:TextureSheet = null):TextureSheet {
+		public static function split(texture:MultiframeBitmapTexture, sheet:TextureSheet = null):TextureSheet {
 			if (!sheet) sheet = new TextureSheet(texture.name);
 			
 			for (var i:int = 0; i < texture.frameCount; i++) {
