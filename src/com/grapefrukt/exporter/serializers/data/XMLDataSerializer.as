@@ -36,6 +36,7 @@ package com.grapefrukt.exporter.serializers.data {
 	import com.grapefrukt.exporter.serializers.images.IImageSerializer;
 	import com.grapefrukt.exporter.textures.FontSheet;
 	import com.grapefrukt.exporter.textures.BitmapTexture;
+	import com.grapefrukt.exporter.textures.MultiframeBitmapTexture;
 	import com.grapefrukt.exporter.textures.TextureBase;
 	import com.grapefrukt.exporter.textures.TextureSheet;
 	import com.grapefrukt.exporter.textures.VectorTexture;
@@ -117,8 +118,15 @@ package com.grapefrukt.exporter.serializers.data {
 			xml.@registrationPointX = texture.registrationPoint.x.toFixed(2);
 			xml.@registrationPointY = texture.registrationPoint.y.toFixed(2);
 			
-			if (texture.isMask) 		xml.@mask 		= texture.isMask ? "1" : "0";
-			if (texture.isMultiframe) 	xml.@frameCount = texture.frameCount;
+			if (texture.isMask) xml.@mask = texture.isMask ? "1" : "0";
+			
+			var mftexture:MultiframeBitmapTexture = texture as MultiframeBitmapTexture;
+			if (mftexture) {
+				xml.@frameCount 	= mftexture.frameCount;
+				xml.@frameWidth 	= mftexture.frameBounds.width;
+				xml.@frameHeight 	= mftexture.frameBounds.height;
+				xml.@columns 		= mftexture.columns;
+			}
 			
 			return xml;
 		}
