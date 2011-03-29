@@ -51,14 +51,10 @@ package com.grapefrukt.exporter.serializers.data {
 		public function serialize(target:*, useFilters:Boolean = false):ByteArray {
 			var xml:XML = _serialize(target);
 			var ba:ByteArray = new ByteArray;
-			ba.writeUTFBytes(addSpaces(xml.toXMLString()));
+			ba.writeUTFBytes(xml.toXMLString());
 			
 			if (useFilters) return filter(ba);
 			return ba;
-		}
-		
-		private function addSpaces(input:String):String {
-			return input.replace(/\/>/g, " />");
 		}
 		
 		private function _serialize(target:*):XML {
