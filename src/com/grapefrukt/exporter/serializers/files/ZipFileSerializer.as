@@ -37,7 +37,7 @@ package com.grapefrukt.exporter.serializers.files {
 	 */
 	public class ZipFileSerializer implements IFileSerializer{
 		
-		private var _zip:FZip;
+		protected var _zip:FZip;
 		
 		public function ZipFileSerializer() {
 			_zip = new FZip;
