@@ -28,25 +28,29 @@ or implied, of grapefrukt games.
 
 package com.grapefrukt.exporter.serializers.images {
 	import com.grapefrukt.exporter.misc.MaxRectsBinPack;
+	import com.grapefrukt.exporter.misc.TextureAtlasRect;
 	import com.grapefrukt.exporter.serializers.files.IFileSerializer;
 	import com.grapefrukt.exporter.textures.BitmapTexture;
 	import com.grapefrukt.exporter.textures.TextureBase;
 	import flash.display.BitmapData;
 	import flash.geom.Rectangle;
 	import flash.utils.ByteArray;
+	import flash.utils.Dictionary;
 	/**
 	 * ...
 	 * @author Martin Jonasson, m@grapefrukt.com
 	 */
 	public class PNGAtlasPackerSerializer extends PNGImageSerializer {
 		
-		private var _texture_rects	:Vector.<TextureRect>;
+		private var _texture_rects	:Vector.<TextureAtlasRect>;
+		private var _rect_dict		:Dictionary;
 		private var _binpackers		:Vector.<MaxRectsBinPack>;
 		private var _atlas_width	:uint;
 		private var _atlas_height	:uint;
 		
 		public function PNGAtlasPackerSerializer(atlasWidth:uint = 512, atlasHeight:uint = 512) {
-			_texture_rects 	= new Vector.<TextureRect>;
+			_texture_rects 	= new Vector.<TextureAtlasRect>;
+			_rect_dict 		= new Dictionary;
 			_binpackers 	= new Vector.<MaxRectsBinPack>;
 			_atlas_width 	= atlasWidth;
 			_atlas_height 	= atlasHeight;
@@ -86,7 +90,10 @@ package com.grapefrukt.exporter.serializers.images {
 				rect = _binpackers[index].insert(bt.bitmap.rect.width, bt.bitmap.rect.height, MaxRectsBinPack.METHOD_RECT_BEST_AREA_FIT);
 			}
 			
-			_texture_rects.push(new TextureRect(bt, rect, index));
+			var tar:TextureAtlasRect = new TextureAtlasRect(bt, rect, index);
+			_texture_rects.push(tar);
+			_rect_dict[bt] = tar;
+			
 			return null;
 		}
 		
@@ -98,34 +105,31 @@ package com.grapefrukt.exporter.serializers.images {
 				atlases.push(new BitmapData(_atlas_width, _atlas_height, true, 0x00000000));
 			}
 			
-			for each(var tr:TextureRect in _texture_rects) {
+			for each(var tr:TextureAtlasRect in _texture_rects) {
 				atlases[tr.atlasIndex].copyPixels(tr.texture.bitmap, tr.texture.bitmap.rect, tr.rect.topLeft);
 			}
 			
 			for (i = 0; i < _binpackers.length; i++) {
-				var bt:BitmapTexture = new BitmapTexture("atlas" + i, atlases[i], atlases[i].rect, 0);
+				var bt:BitmapTexture = new BitmapTexture(getAtlasName(i), atlases[i], atlases[i].rect, 0);
 				fileSerializer.serialize(bt.name + extension, super.serialize(bt));
 			}
+		}
+		
+		public function getRect(texture:BitmapTexture):TextureAtlasRect {
+			return _rect_dict[texture];
 		}
 		
 		override public function get extension():String {
 			return ".png";
 		}
 		
+		public function getAtlasName(index:int):String {
+			return "atlas" + index;
+		}
+		
+		public function get atlasWidth():uint { return _atlas_width; }
+		public function get atlasHeight():uint { return _atlas_height; }
+		
 	}
 
-}
-import com.grapefrukt.exporter.textures.BitmapTexture;
-import flash.geom.Rectangle;
-
-class TextureRect {
-	public var texture		:BitmapTexture;
-	public var rect			:Rectangle;
-	public var atlasIndex	:uint = 0;
-	
-	public function TextureRect(texture:BitmapTexture, rect:Rectangle, atlasIndex:uint) {
-		this.rect = rect;
-		this.texture = texture;
-		this.atlasIndex = atlasIndex;
-	}
 }
