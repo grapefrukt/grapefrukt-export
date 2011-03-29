@@ -57,7 +57,7 @@ package com.grapefrukt.exporter.serializers.data {
 			return ba;
 		}
 		
-		private function _serialize(target:*):XML {
+		protected function _serialize(target:*):XML {
 			if (target is FontSheet)	 			return serializeFontSheet(FontSheet(target));
 			
 			if (target is VectorTexture) 			return serializeVectorTexture(VectorTexture(target));
@@ -73,7 +73,7 @@ package com.grapefrukt.exporter.serializers.data {
 			return null;
 		}
 		
-		private function serializeVectorTexture(texture:VectorTexture):XML {
+		protected function serializeVectorTexture(texture:VectorTexture):XML {
 			var xml:XML = <VectorTexture></VectorTexture>;
 			xml.@name 	= texture.name;
 			xml.@path 	= texture.filenameWithPath;
@@ -81,7 +81,7 @@ package com.grapefrukt.exporter.serializers.data {
 			return xml;
 		}
 		
-		private function serializeTextureSheetCollection(collection:TextureSheetCollection):XML {
+		protected function serializeTextureSheetCollection(collection:TextureSheetCollection):XML {
 			collection.sort();
 			var xml:XML = <Textures></Textures>
 			for (var i:int = 0; i < collection.size; i++) {
@@ -90,7 +90,7 @@ package com.grapefrukt.exporter.serializers.data {
 			return xml;
 		}
 		
-		private function serializeTextureSheet(sheet:TextureSheet):XML {
+		protected function serializeTextureSheet(sheet:TextureSheet):XML {
 			var xml:XML = <TextureSheet></TextureSheet>;
 			xml.@name = sheet.name;
 			
@@ -103,7 +103,7 @@ package com.grapefrukt.exporter.serializers.data {
 			return xml;
 		}
 		
-		private function serializeTexture(texture:BitmapTexture):XML {
+		protected function serializeTexture(texture:BitmapTexture):XML {
 			var xml:XML = <Texture></Texture>;
 			xml.@name 	= texture.name;
 			xml.@width 	= Math.round(texture.bounds.width);
@@ -120,7 +120,7 @@ package com.grapefrukt.exporter.serializers.data {
 		}
 		
 		
-		private function serializeAnimationCollection(collection:AnimationCollection):XML {
+		protected function serializeAnimationCollection(collection:AnimationCollection):XML {
 			collection.sort();
 			var xml:XML = <Animations></Animations>
 			for (var i:int = 0; i < collection.size; i++) {
@@ -129,7 +129,7 @@ package com.grapefrukt.exporter.serializers.data {
 			return xml;
 		}
 		
-		private function serializeAnimation(animation:Animation):XML {
+		protected function serializeAnimation(animation:Animation):XML {
 			var xml:XML = <Animation></Animation>;
 			xml.@name 		= animation.name;
 			xml.@frameCount = animation.frameCount;
@@ -155,7 +155,7 @@ package com.grapefrukt.exporter.serializers.data {
 			return xml;
 		}
 		
-		private function serializeAnimationFrame(frame:AnimationFrame):XML {
+		protected function serializeAnimationFrame(frame:AnimationFrame):XML {
 			var xml:XML = <Frame></Frame>;
 			
 			if (frame.visible) {
@@ -172,7 +172,7 @@ package com.grapefrukt.exporter.serializers.data {
 			return xml;
 		}
 				
-		private function serializeFontSheet(sheet:FontSheet):XML {
+		protected function serializeFontSheet(sheet:FontSheet):XML {
 			var xml:XML = <FontData></FontData>;
 			xml.Texture = sheet.fontName;
 			xml.LineHeight = sheet.lineHeight;
