@@ -19,6 +19,7 @@ package com.grapefrukt.exporter.serializers.files {
 		}
 		
 		override public function output():void {
+			Logger.log("ServerUploadSerializer", "upload started");
 			var zip:ByteArray = new ByteArray;
 			_zip.serialize(zip);
 			
@@ -35,11 +36,12 @@ package com.grapefrukt.exporter.serializers.files {
 		}
 		
 		private function handleProgress(e:ProgressEvent):void {
-			Logger.log("ServerUploadSerializer", "upload progress...");
+			Logger.log("ServerUploadSerializer", "upload progress...", Math.round(e.bytesLoaded / e.bytesTotal * 100) + "%");
 		}
 		
 		private function handleUploadComplete(e:Event):void {
 			Logger.log("ServerUploadSerializer", "upload complete");
+			Logger.log("ServerUploadSerializer", "server said", e.target.data);
 		}
 		
 	}
