@@ -32,7 +32,7 @@ package com.grapefrukt.exporter.collections {
 	 * ...
 	 * @author Martin Jonasson, m@grapefrukt.com
 	 */
-	public class TextureSheetCollection{
+	public class TextureSheetCollection {
 		
 		private var _collection:Vector.<TextureSheet>;
 		
