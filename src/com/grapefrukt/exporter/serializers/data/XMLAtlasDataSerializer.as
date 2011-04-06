@@ -48,7 +48,7 @@ package com.grapefrukt.exporter.serializers.data {
 			var xml:XML = super.serializeTexture(texture);
 			var rect:TextureAtlasRect = _atlaspacker.getRect(texture);
 			
-			xml.@atlas	= _atlaspacker.getAtlasName(rect.atlasIndex);
+			xml.@atlas	= _atlaspacker.getAtlasName(rect.atlasIndex) + _atlaspacker.extension;
 			xml.@top 	= scale(rect.rect.top, 		false);
 			xml.@right 	= scale(rect.rect.right, 	true);
 			xml.@bottom = scale(rect.rect.bottom, 	false);
