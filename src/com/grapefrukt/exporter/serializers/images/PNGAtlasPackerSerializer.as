@@ -124,7 +124,7 @@ package com.grapefrukt.exporter.serializers.images {
 		}
 		
 		public function getAtlasName(index:int):String {
-			return "atlas" + index;
+			return index.toString();
 		}
 		
 		public function get atlasWidth():uint { return _atlas_width; }
