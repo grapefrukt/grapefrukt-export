@@ -79,6 +79,7 @@ package com.grapefrukt.exporter.serializers.data {
 			xml.@name 	= texture.name;
 			xml.@path 	= texture.filenameWithPath;
 			if (texture.isMask) xml.@mask = texture.isMask ? "1" : "0";
+			if (texture.zIndex != 0) xml.@zIndex = texture.zIndex;
 			return xml;
 		}
 		
@@ -115,6 +116,7 @@ package com.grapefrukt.exporter.serializers.data {
 			xml.@registrationPointY = texture.registrationPoint.y.toFixed(2);
 			
 			if (texture.isMask) xml.@mask = texture.isMask ? "1" : "0";
+			if (texture.zIndex != 0) xml.@zIndex = texture.zIndex;
 			
 			var mftexture:MultiframeBitmapTexture = texture as MultiframeBitmapTexture;
 			if (mftexture) {
