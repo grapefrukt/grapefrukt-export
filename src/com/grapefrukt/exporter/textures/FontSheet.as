@@ -109,6 +109,10 @@ package com.grapefrukt.exporter.textures {
 			_word_space = value;
 		}
 		
+		public function get filenameWithPath():String {
+			return fontName + _merged_texture.extension;
+		}
+		
 		public function get fontName():String { return _merged_texture.name; }
 		override public function get name():String { return "fonts"; }
 		
