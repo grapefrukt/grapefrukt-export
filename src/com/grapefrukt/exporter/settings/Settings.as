@@ -33,7 +33,7 @@ package com.grapefrukt.exporter.settings {
 		/**
 		 * Default number of columns for multiframe textures
 		 */
-		public static const defaultMultiframeCols:uint = 4
+		public static var defaultMultiframeCols:uint = 4;
 		
 		/**
 		 * These are the chars that will be extracted if none are specified
