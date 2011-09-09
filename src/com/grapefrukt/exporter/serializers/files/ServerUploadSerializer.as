@@ -8,7 +8,7 @@ package com.grapefrukt.exporter.serializers.files {
 	import flash.utils.ByteArray;
 	/**
 	 * ...
-	 * @author Martin Jonasson (m@grapefrukt.com)
+	 * @author Martin Jonasson, m@grapefrukt.com
 	 */
 	public class ServerUploadSerializer extends ZipFileSerializer {
 		
