@@ -1,0 +1,10 @@
+# Flex SDK File Location
+FLEX_HOME=C:/Program Files (x86)/FlashDevelop/Tools/flexsdk
+
+debug=false
+
+#the location you wish to output bin on your computer
+output=../bin/
+
+#library name
+name=grapefrukt-export

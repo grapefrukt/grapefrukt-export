@@ -5,4 +5,4 @@
 .flexLibProperties
 *.as3proj
 obj
-swc
+build/build.properties

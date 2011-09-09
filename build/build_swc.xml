@@ -1,0 +1,22 @@
+<project name="grapefrukt exporter swc" default="Compile SWC">
+ 
+ <!-- load user configuration properties -->
+ <property file="build.properties" />
+ 
+	<taskdef resource="flexTasks.tasks" classpath="${FLEX_HOME}/ant/lib/flexTasks.jar" />
+ 
+	<target name="Compile SWC" description="Compiles Library">
+		<compc debug="${debug}" output="${output}/${name}.swc" locale="en_US">
+			<load-config filename="${FLEX_HOME}/frameworks/air-config.xml" />
+			
+			<library-path dir="../lib-swc" append="true">
+				<include name="as3swf.swc"/>
+				<include name="blooddy_crypto.swc"/>
+				<include name="fzip.swc"/>
+			</library-path>
+			
+			<source-path path-element="../src"/>
+			<include-sources dir="../src" includes="**/*.as" />
+		</compc>
+	</target>
+</project>
