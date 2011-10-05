@@ -36,6 +36,12 @@ package com.grapefrukt.exporter.settings {
 		public static var defaultMultiframeCols:uint = 4;
 		
 		/**
+		 * The separator used for sheets/texture filenames. use a slash (default) to get folders.
+		 * Setting it to "_" would give: sheetname_texturename.png
+		 */
+		public static var directorySeparator:String = "/";
+		
+		/**
 		 * These are the chars that will be extracted if none are specified
 		 */
 		public static var defaultFontChars:String =  	"! \"#$%&'()*+,-./" + 

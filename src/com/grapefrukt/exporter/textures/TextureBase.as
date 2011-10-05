@@ -27,6 +27,7 @@ or implied, of grapefrukt games.
 */
 
 package com.grapefrukt.exporter.textures {
+	import com.grapefrukt.exporter.settings.Settings;
 	/**
 	 * ...
 	 * @author Martin Jonasson, m@grapefrukt.com
@@ -50,7 +51,7 @@ package com.grapefrukt.exporter.textures {
 		public function get isMask():Boolean { return _is_mask; }
 		
 		public function get filenameWithPath():String {
-			return sheet.name + "/" + name + extension;
+			return sheet.name + Settings.directorySeparator + name + extension;
 		}
 		
 		public function get sheet():TextureSheet { return _sheet; }
