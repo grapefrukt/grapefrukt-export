@@ -29,6 +29,7 @@ or implied, of grapefrukt games.
 package com.grapefrukt.exporter.serializers.data {
 	import com.grapefrukt.exporter.animations.Animation;
 	import com.grapefrukt.exporter.animations.AnimationFrame;
+	import com.grapefrukt.exporter.animations.AnimationMarker;
 	import com.grapefrukt.exporter.animations.AnimationPart;
 	import com.grapefrukt.exporter.collections.AnimationCollection;
 	import com.grapefrukt.exporter.collections.FontSheetCollection;
@@ -146,7 +147,14 @@ package com.grapefrukt.exporter.serializers.data {
 			if(animation.loopAt != -1) 	xml.@loopAt = animation.loopAt;
 			if(animation.mask) 			xml.@mask	= animation.mask;
 			
-			animation.sortParts();
+			animation.sort();
+			
+			for each (var marker:AnimationMarker in animation.markers) {
+				var markerXML:XML = <Marker></Marker>;
+				markerXML.@name = marker.name;
+				markerXML.@frame = marker.frame;
+				xml.appendChild(markerXML);
+			}
 			
 			for each (var part:AnimationPart in animation.parts) {
 				var partXML:XML = <Part></Part>;
@@ -204,7 +212,7 @@ package com.grapefrukt.exporter.serializers.data {
 			
 			return xml;
 		}
-	
+		
 	}
 
 }

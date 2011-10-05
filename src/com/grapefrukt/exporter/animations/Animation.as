@@ -42,6 +42,7 @@ package com.grapefrukt.exporter.animations {
 		private var _loop_at		:int;
 		private var _parts			:Vector.<AnimationPart>;
 		private var _parts_dict		:Dictionary;
+		private var _markers		:Vector.<AnimationMarker>;
 		private var _mask			:String;
 		
 		public function Animation(name:String, frameCount:int, loopAt:int, parts:Vector.<Child>) {
@@ -53,6 +54,8 @@ package com.grapefrukt.exporter.animations {
 			_parts = new Vector.<AnimationPart>();
 			_parts_dict = new Dictionary;
 			
+			_markers = new Vector.<AnimationMarker>;
+			
 			for each(var child:Child in parts) {
 				var aw:AnimationPart = new AnimationPart(child.name);
 				_parts.push(aw);
@@ -60,8 +63,9 @@ package com.grapefrukt.exporter.animations {
 			}
 		}
 		
-		public function sortParts():void {
-			_parts.sort(_sort);
+		public function sort():void {
+			_parts.sort(_sort_animation_part);
+			_markers.sort(_sort_marker);
 		}
 		
 		public function setFrame(part:String, index:int, frame:AnimationFrame):void {
@@ -91,12 +95,19 @@ package com.grapefrukt.exporter.animations {
 		
 		public function get parts():Vector.<AnimationPart> { return _parts; }
 		
-		private function _sort(x:AnimationPart, y:AnimationPart):Number {
+		public function get markers():Vector.<AnimationMarker> { return _markers; }
+		
+		private function _sort_animation_part(x:AnimationPart, y:AnimationPart):Number {
 			if (x.name < y.name) 	return -1;
 			if (x.name > y.name) 	return 1;
 			return  0;
 		}
 		
+		private function _sort_marker(x:AnimationMarker, y:AnimationMarker):Number {
+			if (x.name < y.name) 	return -1;
+			if (x.name > y.name) 	return 1;
+			return  0;
+		}
 		
 	}
 

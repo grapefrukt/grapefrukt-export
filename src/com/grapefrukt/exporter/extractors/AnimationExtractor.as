@@ -28,8 +28,10 @@ or implied, of grapefrukt games.
 
 ﻿package com.grapefrukt.exporter.extractors {
 	
+	import adobe.utils.CustomActions;
 	import com.grapefrukt.exporter.animations.Animation;
 	import com.grapefrukt.exporter.animations.AnimationFrame;
+	import com.grapefrukt.exporter.animations.AnimationMarker;
 	import com.grapefrukt.exporter.collections.AnimationCollection;
 	import com.grapefrukt.exporter.debug.Logger;
 	import com.grapefrukt.exporter.misc.Child;
@@ -58,39 +60,46 @@ or implied, of grapefrukt games.
 		}
 		
 		private static function getFragments(mc:MovieClip):Vector.<AnimationFragment> {
+			var fragment:AnimationFragment;
 			var labels:Array = mc.currentLabels;
+			var fragments:Vector.<AnimationFragment> = new Vector.<AnimationFragment>;			
 			
-			var fragments:Vector.<AnimationFragment> = new Vector.<AnimationFragment>;
-			
-			var name:String = ""
-			var start:int = 0;
-			var end:int = 0;
-			var loop:int = 0;
-			
-			for (var i:uint = 0; i < labels.length; i++) {
-				var label:FrameLabel = labels[i];
-				if (name != "" && label.name.indexOf('loop') == 0) {
-					loop = label.frame;
-				} else {
-					if (name != "") {
-						end = label.frame - 1;
-						fragments.push(new AnimationFragment(name, start, end, loop))
-					}
-					
-					name = label.name;
-					start = label.frame;
-					loop = 0;
-					end = 0;
-					
-				}
+			var i:uint;
+			for (i = 0; i < labels.length; i++) {
+				// we only care about animation labels now, not event- or loop markers, if we come upon them, just skip em'
+				if (labels[i].name.charAt(0) == "@" || labels[i].name.indexOf("loop") == 0) continue;
 				
+				// if there's a previous fragment, we mark it's end
+				if (fragments.length) fragments[fragments.length - 1].endFrame = labels[i].frame - 1;
+				
+				// push the new fragment onto the list
+				fragments.push(new AnimationFragment(labels[i].name, labels[i].frame));
 			}
 			
-			end = mc.totalFrames;
-			fragments.push(new AnimationFragment(name, start, end, loop));
+			// once we've done the entire list, we know the last fragment ends at the last frame of the animation
+			if (fragments.length) fragments[fragments.length - 1].endFrame = mc.totalFrames;
+			
+			// and a second pass to find all loop and event markers
+			for (i = 0; i < labels.length; i++) {
+				if (labels[i].name.indexOf("loop") == 0) {
+					fragment = getFragment(fragments, labels[i].frame);
+					if (fragment) fragment.loopFrame = labels[i].frame;
+				} else if (labels[i].name.charAt(0) == "@") {
+					fragment = getFragment(fragments, labels[i].frame);
+					if (fragment) fragment.markers.push(new AnimationMarker(labels[i].frame, labels[i].name.substr(1)));
+				}
+			}
 			
 			return fragments;
 		}
+		
+		private static function getFragment(fragments:Vector.<AnimationFragment>, frame:int):AnimationFragment {
+			for (var i:int = 0; i < fragments.length; i++) {
+				if (fragments[i].startFrame > frame) return fragments[i - 1];
+			}
+			return null;
+		}
+		
 		
 		private static function getAnimation(mc:MovieClip, fragment:AnimationFragment, parts:Vector.<Child>):Animation {
 			var loopAt:int = -1;
@@ -108,12 +117,18 @@ or implied, of grapefrukt games.
 				}
 			}
 			
+			for each (var marker:AnimationMarker in fragment.markers) {
+				marker.frame -= fragment.startFrame;
+				animation.markers.push(marker);
+			}
+			
 			return animation;
 		}
 		
 	}
 
 }
+import com.grapefrukt.exporter.animations.AnimationMarker;
 
 class AnimationFragment {
 	
@@ -121,22 +136,29 @@ class AnimationFragment {
 	private var _start	:int = 		0;
 	private var _end	:int = 		0;
 	private var _loop	:int = 		0;
+	private var _markers:Vector.<AnimationMarker>;
 	
-	public function AnimationFragment(name:String, start:int, end:int, loop:int) {
+	public function AnimationFragment(name:String, start:int) {
 		_name = name;
 		_start = start;
-		_end = end;
-		_loop = loop;
+		_markers = new Vector.<AnimationMarker>;
 	}
 	
 	public function get name():String { return _name; }
-	public function get loopFrame():int { return _loop; }
-	public function get endFrame():int { return _end; }
 	public function get startFrame():int { return _start; }
+	
+	public function get loopFrame():int { return _loop; }
+	public function set loopFrame(value:int):void { _loop = value; }
+	
+	public function get endFrame():int { return _end; }
+	public function set endFrame(value:int):void { _end = value; }
+	
+	public function get markers():Vector.<AnimationMarker> { return _markers; }
 	
 	public function get totalFrameCount():int { return _end - _start + 1; }
 	public function get loopFrameCount():int { return _end - _loop; }
 	public function get preLoopFrameCount():int { return _loop - _start; }
 	
 	public function get loops():Boolean { return _loop > 0; }
+	
 }
