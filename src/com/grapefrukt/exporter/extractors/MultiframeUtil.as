@@ -43,6 +43,12 @@ package com.grapefrukt.exporter.extractors {
 	
 	public class MultiframeUtil {
 		
+		/**
+		 * Merges a series of separate BitmapTextures together into one big atlas
+		 * @param	frames	The frames to merge
+		 * @param	columns	The number of columns to use (Defaults to Settings.defaultMultiframeCols if set to -1)
+		 * @return	A merged MultiFrameBitmapTexture with all the supplied frames
+		 */
 		public static function merge(frames:Vector.<BitmapTexture>, columns:int = -1):MultiframeBitmapTexture {
 			var bounds		:Rectangle = frames[0].bounds.clone();
 			var frameCount	:int = frames.length;
@@ -82,20 +88,27 @@ package com.grapefrukt.exporter.extractors {
 			return new MultiframeBitmapTexture(frames[0].name, bitmap, bounds, frames[0].zIndex, frameCount, frameBounds.clone(), cols, frames[0].isMask);
 		}
 		
+		/**
+		 * Splits apart a MultiframeBitmapTexture into its frames again. Each frame will keep any padding that was added to it when merged. 
+		 * @param	texture
+		 * @param	sheet
+		 * @return
+		 */
 		public static function split(texture:MultiframeBitmapTexture, sheet:TextureSheet = null):TextureSheet {
 			if (!sheet) sheet = new TextureSheet(texture.name);
 			
 			for (var i:int = 0; i < texture.frameCount; i++) {
-				var bmp:BitmapData = new BitmapData(texture.bounds.width, texture.bounds.height, true, 0x00000000);
+				var bmp:BitmapData = new BitmapData(texture.frameBounds.width, texture.frameBounds.height, true, 0x00000000);
 				
-				//var bounds:Rectangle = new Rectangle(texture.bounds.width * (i % COLS_DEFAULT), texture.bounds.height * Math.floor(i / COLS_DEFAULT), texture.bounds.width, texture.bounds.height);
 				var mtx:Matrix = new Matrix;
-				
-				mtx.translate(-texture.bounds.width * (i % Settings.defaultMultiframeCols), -texture.bounds.height * Math.floor(i / Settings.defaultMultiframeCols))
+				mtx.translate(-texture.frameBounds.width * (i % Settings.defaultMultiframeCols), -texture.frameBounds.height * Math.floor(i / Settings.defaultMultiframeCols))
 				
 				bmp.draw(texture.bitmap, mtx, null, null)
 				
-				var newtex:BitmapTexture = new BitmapTexture(texture.name + "_" + i, bmp, texture.bounds, 0);
+				var bounds:Rectangle = texture.frameBounds.clone();
+				bounds.x = -texture.registrationPoint.x;
+				bounds.y = -texture.registrationPoint.y;
+				var newtex:BitmapTexture = new BitmapTexture(texture.name + "_" + i, bmp, bounds, 0);
 				
 				sheet.add(newtex);
 			}
