@@ -39,48 +39,45 @@ package com.grapefrukt.exporter.debug {
 	 */
 	public class ConsoleLog extends Sprite {
 		
-		private var _text		:TextField;
-		private var _log_color	:Vector.<String>;
+		private var _text			:TextField;
+		private var _log_color		:Vector.<String>;
 		
-		private var _width		:int = 800;
-		private var _height		:int = 200;
-		private var _margin		:int = 5;
-		private var _minimum_level:int;
+		private var _width			:int;
+		private var _height			:int;
+		private var _minimum_level	:int;
+		private var _margin			:int = 5;
 		
-		public function ConsoleLog(minimumLevel:int = Logger.DEBUG) {			
+		/**
+		 * Creates a text window that displays all logging statements from the exporter
+		 * @param	width			Vertical size of the window
+		 * @param	height			Horizontal size of the window
+		 * @param	minimumLevel	The minimum error level to log, Logger.DEBUG is the lowest, Logger.FATAL is the highest
+		 * @param	backgroundColor	The background color for the window
+		 * @param	textColor		The text color for the window
+		 */
+		public function ConsoleLog(width:int = 800, height:int = 600, minimumLevel:int = Logger.DEBUG, backgroundColor:int = 0xffffff) {
+			_height = height;
+			_width = width;
 			_minimum_level = minimumLevel;
 			
 			_log_color = Vector.<String>(["#000000", "#000000", "#8F43A3", "#C40000"]);
 			
 			_text 					= new TextField();
-			_text.textColor 		= 0x000000;
 			_text.selectable 		= true;
 			_text.defaultTextFormat = new TextFormat("Consolas", 11, 0x000000);
 			_text.mouseWheelEnabled = true;
+			_text.opaqueBackground  = backgroundColor;
+			_text.height 			= _height;
 			_text.width 			= _width;
 			_text.wordWrap			= false;
 			_text.multiline			= true;
 			addChild(_text);
 			
-			_text.htmlText = "ConsoleLog - glorg asset exporter - " + new Date();
+			_text.htmlText = "ConsoleLog - grapefrukt asset exporter - " + new Date();
 			
 			Logger.dispatcher.addEventListener(	LogEvent.LOG, handleLog);
-			
-			addEventListener(Event.ADDED_TO_STAGE, handelAddedToStage);
 		}
 		
-		private function handelAddedToStage(e:Event):void {
-			removeEventListener(Event.ADDED_TO_STAGE, handelAddedToStage);
-			
-			handleResize(null);
-			stage.addEventListener(Event.RESIZE, handleResize);
-		}
-		
-		private function handleResize(e:Event):void {
-			graphics.beginFill(0xdddddd, .9);
-			graphics.drawRect(0, 0, stage.stageWidth, height);
-		}
-
 		private function handleLog(e:LogEvent):void {
 			if (e.severity < _minimum_level) return;
 			_text.htmlText += '<font color="' + _log_color[e.severity] + '">' + timestamp() + e.source + " : " + e.message + " - " + e.description + "</font>";
@@ -92,7 +89,7 @@ package com.grapefrukt.exporter.debug {
 			return "[" + zeroPad(d.getHours().toString()) + ":" + zeroPad(d.getMinutes().toString()) + ":" + zeroPad(d.getSeconds().toString()) + "] "
 		}
 		
-		public static function zeroPad(string:String, len:int = 2):String {
+		private static function zeroPad(string:String, len:int = 2):String {
 			while (string.length < len) string = '0' + string;
 			return string;
 		}	
