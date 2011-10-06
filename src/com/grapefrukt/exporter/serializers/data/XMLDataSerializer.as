@@ -50,7 +50,7 @@ package com.grapefrukt.exporter.serializers.data {
 	 */
 	public class XMLDataSerializer extends BaseDataSerializer implements IDataSerializer  {
 		
-		public function serialize(target:*, useFilters:Boolean = false):ByteArray {
+		public function serialize(target:*, useFilters:Boolean = true):ByteArray {
 			var xml:XML = _serialize(target);
 			var ba:ByteArray = new ByteArray;
 			ba.writeUTFBytes(xml.toXMLString());
