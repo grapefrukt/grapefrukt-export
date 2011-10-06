@@ -63,6 +63,12 @@ package com.grapefrukt.exporter.extractors {
 			return childrenToSheet(sheet, getChildren(sheet, ignore), respectScale, returnClass);
 		}
 		
+		/**
+		 * Convenience wrapper for extract(), supply with your desired sheet name and the classes (not instances!) you want in it
+		 * @param	sheetName	The desired sheet name
+		 * @param	...rest		A list of classes you want to parse into a sheet
+		 * @return				A texture sheet containing the supplied classes
+		 */
 		public static function extractFromClasses(sheetName:String, ...rest):TextureSheet {
 			return extract(classesToSheetSprite(sheetName, rest));
 		}

@@ -81,12 +81,21 @@ package com.grapefrukt.exporter.extractors {
 			}
 		}
 		
+		/**
+		 * Loops over all children in supplied DisplayObjectContainer and names them according to their class
+		 * @param	target
+		 */
 		public static function nameChildren(target:DisplayObjectContainer):void {
 			for (var i:int = 0; i < target.numChildren; i++) {
 				target.getChildAt(i).name = getName(target.getChildAt(i));
 			}
 		}
-				
+		
+		/**
+		 * Tries to figure out the name of the supplied object, if nothing can be found it is named after it's class name
+		 * @param	instance	The instance to try and name
+		 * @return	The found name
+		 */
 		public static function getName(instance:Object):String {
 			var name:String;
 			if (instance.hasOwnProperty("name")) name = instance.name;

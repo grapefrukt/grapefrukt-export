@@ -47,6 +47,12 @@ or implied, of grapefrukt games.
 	
 	public class AnimationExtractor {
 		
+		/**
+		 * Extracts animations from target into the supplied AnimationCollection
+		 * @param	list	This is where extracted animations will be added
+		 * @param	target	The MovieClip to extract from
+		 * @param	ignore	A list of children to ignore (Array of strings)
+		 */
 		public static function extract(list:AnimationCollection, target:MovieClip, ignore:Array = null):void {
 			Logger.log("AnimationExtractor", "extracting", target.toString());
 			var fragments:Vector.<AnimationFragment> = getFragments(target);

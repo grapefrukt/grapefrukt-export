@@ -38,7 +38,7 @@ package com.grapefrukt.exporter.textures {
 
 		private var _frame_count	:int;
 		private var _frame_bounds	:Rectangle;
-		private var _columns			:int;
+		private var _columns		:int;
 		
 		public function MultiframeBitmapTexture(name:String, bitmap:BitmapData, bounds:Rectangle, zIndex:int, frameCount:int, frameBounds:Rectangle, cols:int, isMask:Boolean = false) {
 			super(name, bitmap, bounds, zIndex, isMask);
