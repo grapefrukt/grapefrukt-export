@@ -71,7 +71,7 @@ package com.grapefrukt.exporter.serializers.files {
 		}
 		
 		public function output():void{
-			NativeApplication.nativeApplication.exit();
+			
 		}
 		
 	}
