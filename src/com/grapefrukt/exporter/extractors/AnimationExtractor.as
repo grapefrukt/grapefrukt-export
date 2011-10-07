@@ -103,7 +103,7 @@ or implied, of grapefrukt games.
 			for (var i:int = 0; i < fragments.length; i++) {
 				if (fragments[i].startFrame > frame) return fragments[i - 1];
 			}
-			return null;
+			return fragments[fragments.length - 1];
 		}
 		
 		
