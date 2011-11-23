@@ -42,11 +42,11 @@ package com.grapefrukt.exporter.serializers.images {
 	 */
 	public class PNGAtlasPackerSerializer extends PNGImageSerializer {
 		
-		private var _texture_rects	:Vector.<TextureAtlasRect>;
-		private var _rect_dict		:Dictionary;
-		private var _binpackers		:Vector.<MaxRectsBinPack>;
-		private var _atlas_width	:uint;
-		private var _atlas_height	:uint;
+		protected var _texture_rects	:Vector.<TextureAtlasRect>;		// stores packed rectangles, used for drawing everything to the atlas on output
+		protected var _rect_dict		:Dictionary;					// used for looking up textures to their corresponding packed rect
+		protected var _binpackers		:Vector.<MaxRectsBinPack>;		// the "bins" used, more are added as needed
+		protected var _atlas_width		:uint;							// the size of the bins
+		protected var _atlas_height		:uint;
 		
 		public function PNGAtlasPackerSerializer(atlasWidth:uint = 512, atlasHeight:uint = 512) {
 			_texture_rects 	= new Vector.<TextureAtlasRect>;
@@ -71,14 +71,14 @@ package com.grapefrukt.exporter.serializers.images {
 				return;
 			}
 			
-			var index:int = -1;
+			var atlasIndex:int = -1;
 			var binWasAdded:Boolean = false;
 			
 			while (!rect || rect.height == 0) {
-				index++;
+				atlasIndex++;
 				
 				// texture did not fit in any previous bin
-				if (index >= _binpackers.length) {
+				if (atlasIndex >= _binpackers.length) {
 					if (binWasAdded) {
 						throw new Error("Can't fit " + texture.name + " in any atlas, giving up");
 						return;
@@ -87,10 +87,10 @@ package com.grapefrukt.exporter.serializers.images {
 					binWasAdded = true;
 				}
 				
-				rect = _binpackers[index].insert(bt.bitmap.rect.width, bt.bitmap.rect.height, MaxRectsBinPack.METHOD_RECT_BEST_AREA_FIT);
+				rect = _binpackers[atlasIndex].insert(bt.bitmap.rect.width, bt.bitmap.rect.height, MaxRectsBinPack.METHOD_RECT_BEST_AREA_FIT);
 			}
 			
-			var tar:TextureAtlasRect = new TextureAtlasRect(bt, rect, index);
+			var tar:TextureAtlasRect = new TextureAtlasRect(bt, rect, atlasIndex);
 			_texture_rects.push(tar);
 			_rect_dict[bt] = tar;
 			
