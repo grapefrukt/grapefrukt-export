@@ -28,6 +28,8 @@ or implied, of grapefrukt games.
 
 package com.grapefrukt.exporter.serializers.files {
 	import deng.fzip.FZip;
+	import flash.events.Event;
+	import flash.system.fscommand;
 	
 	import flash.net.FileReference;
 	import flash.utils.ByteArray;
@@ -38,8 +40,10 @@ package com.grapefrukt.exporter.serializers.files {
 	public class ZipFileSerializer implements IFileSerializer{
 		
 		protected var _zip:FZip;
+		private var _exit_after_save:Boolean;
 		
-		public function ZipFileSerializer() {
+		public function ZipFileSerializer(exitAfterSave:Boolean = false) {
+			_exit_after_save = exitAfterSave;
 			_zip = new FZip;
 		}
 		
@@ -51,7 +55,12 @@ package com.grapefrukt.exporter.serializers.files {
 			var fr:FileReference = new FileReference;
 			var zip:ByteArray = new ByteArray;
 			_zip.serialize(zip);
+			if (_exit_after_save) fr.addEventListener(Event.COMPLETE, handleComplete);
 			fr.save(zip, "data.zip");
+		}
+		
+		private function handleComplete(e:Event):void {
+			fscommand("quit");
 		}
 		
 	}
