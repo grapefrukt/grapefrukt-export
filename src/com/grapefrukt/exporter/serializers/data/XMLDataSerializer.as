@@ -118,12 +118,15 @@ package com.grapefrukt.exporter.serializers.data {
 			if (texture.isMask) xml.@mask = texture.isMask ? "1" : "0";
 			if (texture.zIndex != 0) xml.@zIndex = texture.zIndex;
 			
+			
 			var mftexture:MultiframeBitmapTexture = texture as MultiframeBitmapTexture;
 			if (mftexture) {
 				xml.@frameCount 	= mftexture.frameCount;
 				xml.@frameWidth 	= mftexture.frameBounds.width;
 				xml.@frameHeight 	= mftexture.frameBounds.height;
 				xml.@columns 		= mftexture.columns;
+				
+				if (mftexture.framerate != Settings.defaultFramerate) xml.@framerate = mftexture.framerate;
 			}
 			
 			return xml;
@@ -143,8 +146,9 @@ package com.grapefrukt.exporter.serializers.data {
 			var xml:XML = <Animation></Animation>;
 			xml.@name 		= animation.name;
 			xml.@frameCount = animation.frameCount;
-			if(animation.loopAt != -1) 	xml.@loopAt = animation.loopAt;
-			if(animation.mask) 			xml.@mask	= animation.mask;
+			if (animation.loopAt != -1) 							xml.@loopAt = animation.loopAt;
+			if (animation.mask) 									xml.@mask	= animation.mask;
+			if (animation.framerate != Settings.defaultFramerate) 	xml.framerate	= animation.framerate;
 			
 			animation.sort();
 			

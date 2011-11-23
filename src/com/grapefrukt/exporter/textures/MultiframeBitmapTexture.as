@@ -27,6 +27,7 @@ or implied, of grapefrukt games.
 */
 
 package com.grapefrukt.exporter.textures {
+	import com.grapefrukt.exporter.settings.Settings;
 	import flash.display.BitmapData;
 	import flash.geom.Rectangle;
 	
@@ -37,6 +38,7 @@ package com.grapefrukt.exporter.textures {
 	public class MultiframeBitmapTexture extends BitmapTexture{
 
 		private var _frame_count	:int;
+		private var _framerate		:Number;
 		private var _frame_bounds	:Rectangle;
 		private var _columns		:int;
 		
@@ -45,12 +47,16 @@ package com.grapefrukt.exporter.textures {
 			_columns = cols;
 			_frame_count = frameCount;
 			_frame_bounds = frameBounds;
+			framerate = Settings.defaultFramerate;
 		}
 		
 		public function get frameCount():int { return _frame_count; }
 		public function get frameBounds():Rectangle { return _frame_bounds; }
 		public function get columns():int { return _columns; }
-
+		
+		public function get framerate():Number { return _framerate; }
+		public function set framerate(value:Number):void {	_framerate = value; }
+		
 	}
 
 }

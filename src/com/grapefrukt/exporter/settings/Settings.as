@@ -69,6 +69,11 @@ package com.grapefrukt.exporter.settings {
 		 */
 		static public var alphaPrecision	:uint = 2;
 		
+		/**
+		 * The default framerate for all animations (frame and otherwise)
+		 */
+		static public var defaultFramerate:Number = 30;
+		
 	}
 
 }

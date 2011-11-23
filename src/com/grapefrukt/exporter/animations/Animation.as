@@ -28,6 +28,7 @@ or implied, of grapefrukt games.
 
 package com.grapefrukt.exporter.animations {
 	import com.grapefrukt.exporter.misc.Child;
+	import com.grapefrukt.exporter.settings.Settings;
 	import flash.utils.Dictionary;
 	
 	/**
@@ -44,6 +45,7 @@ package com.grapefrukt.exporter.animations {
 		private var _parts_dict		:Dictionary;
 		private var _markers		:Vector.<AnimationMarker>;
 		private var _mask			:String;
+		private var _framerate		:Number;
 		
 		public function Animation(name:String, frameCount:int, loopAt:int, parts:Vector.<Child>) {
 			_loop_at = loopAt;
@@ -61,6 +63,8 @@ package com.grapefrukt.exporter.animations {
 				_parts.push(aw);
 				_parts_dict[child.name] = aw;
 			}
+			
+			_framerate = Settings.defaultFramerate;
 		}
 		
 		public function sort():void {
@@ -86,16 +90,14 @@ package com.grapefrukt.exporter.animations {
 		public function get name():String { return _name; }
 		public function get loopAt():int { return _loop_at; }
 		public function get partCount():int { return _parts.length; }
+		public function get parts():Vector.<AnimationPart> { return _parts; }
+		public function get markers():Vector.<AnimationMarker> { return _markers; }
 		
 		public function get mask():String { return _mask; }
+		public function set mask(value:String):void { _mask = value; }
 		
-		public function set mask(value:String):void {
-			_mask = value;
-		}
-		
-		public function get parts():Vector.<AnimationPart> { return _parts; }
-		
-		public function get markers():Vector.<AnimationMarker> { return _markers; }
+		public function get framerate():Number { return _framerate; }
+		public function set framerate(value:Number):void { _framerate = value; }
 		
 		private function _sort_animation_part(x:AnimationPart, y:AnimationPart):Number {
 			if (x.name < y.name) 	return -1;
