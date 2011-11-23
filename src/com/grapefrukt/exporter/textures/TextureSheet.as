@@ -41,11 +41,19 @@ package com.grapefrukt.exporter.textures {
 			_textures = new Vector.<TextureBase>;
 		}
 		
+		/**
+		 * Adds a texture to this sheet and marks it as belonging to this sheet
+		 * @param	texture
+		 */
 		public function add(texture:TextureBase):void {
 			texture.sheet = this;
 			_textures.push(texture);
 		}
 		
+		/**
+		 * Adds a texture to this sheet without marking it as belonging to this sheet (Useful for textures that are in multiple sheets)
+		 * @param	texture
+		 */
 		public function addExternal(texture:TextureBase):void {
 			_textures.push(texture);
 		}
@@ -57,6 +65,12 @@ package com.grapefrukt.exporter.textures {
 			return null;
 		}
 		
+		/**
+		 * Removes a texture from this sheet. Note that the texture will still be associated with with the sheet unless you explicitly set TextureBase.sheet to null.
+		 * @param	name The texture to remove
+		 * @return	The removed texture (null if no texture was removed)
+		 * @see		com.grapefrukt.exporter.textures.TextureBase#sheet
+		 */
 		public function removeTexture(name:String):TextureBase {
 			for (var i:int = 0; i < _textures.length; i++) {
 				if (_textures[i].name == name) {
