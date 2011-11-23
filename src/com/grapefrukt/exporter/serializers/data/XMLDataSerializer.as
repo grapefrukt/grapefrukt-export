@@ -32,17 +32,16 @@ package com.grapefrukt.exporter.serializers.data {
 	import com.grapefrukt.exporter.animations.AnimationMarker;
 	import com.grapefrukt.exporter.animations.AnimationPart;
 	import com.grapefrukt.exporter.collections.AnimationCollection;
-	import com.grapefrukt.exporter.collections.FontSheetCollection;
 	import com.grapefrukt.exporter.collections.TextureSheetCollection;
-	import com.grapefrukt.exporter.serializers.images.IImageSerializer;
-	import com.grapefrukt.exporter.textures.FontSheet;
+	import com.grapefrukt.exporter.settings.Settings;
 	import com.grapefrukt.exporter.textures.BitmapTexture;
+	import com.grapefrukt.exporter.textures.FontSheet;
 	import com.grapefrukt.exporter.textures.MultiframeBitmapTexture;
 	import com.grapefrukt.exporter.textures.TextureBase;
 	import com.grapefrukt.exporter.textures.TextureSheet;
 	import com.grapefrukt.exporter.textures.VectorTexture;
-	
 	import flash.utils.ByteArray;
+	
 	
 	/**
 	 * ...
@@ -177,19 +176,23 @@ package com.grapefrukt.exporter.serializers.data {
 			var xml:XML = <Frame></Frame>;
 			
 			if (frame.visible) {
-				if (frame.x.toFixed(1) 			!= "0.0")	xml.@x 			= frame.x.toFixed(1);
-				if (frame.y.toFixed(1) 			!= "0.0")	xml.@y 			= frame.y.toFixed(1);
-				if (frame.scaleX.toFixed(2) 	!= "1.00") 	xml.@scaleX 	= frame.scaleX.toFixed(2);
-				if (frame.scaleY.toFixed(2) 	!= "1.00") 	xml.@scaleY 	= frame.scaleY.toFixed(2);
-				if (frame.rotation.toFixed(2) 	!= "0.00") 	xml.@rotation 	= frame.rotation.toFixed(2);
-				if (frame.alpha != 1) 						xml.@alpha 		= frame.alpha.toFixed(2);
+				if (!equal(frame.x, 0, Settings.positionPrecision))			xml.@x 			= frame.x.toFixed(Settings.positionPrecision);
+				if (!equal(frame.y, 0, Settings.positionPrecision))			xml.@y 			= frame.y.toFixed(Settings.positionPrecision);
+				if (!equal(frame.scaleX, 1, Settings.scalePrecision)) 		xml.@scaleX 	= frame.scaleX.toFixed(Settings.scalePrecision);
+				if (!equal(frame.scaleY, 1, Settings.scalePrecision)) 		xml.@scaleY 	= frame.scaleY.toFixed(Settings.scalePrecision);
+				if (!equal(frame.rotation, 0, Settings.rotationPrecision)) 	xml.@rotation 	= frame.rotation.toFixed(Settings.rotationPrecision);
+				if (!equal(frame.alpha, 1, Settings.alphaPrecision)) 		xml.@alpha 		= frame.alpha.toFixed(Settings.alphaPrecision);
 			} else {
 				return null;
 			}
 			
 			return xml;
 		}
-				
+		
+		private function equal(value1:Number, value2:Number, precision:uint):Boolean {
+			return value1.toFixed(precision) == value2.toFixed(precision);
+		}
+		
 		protected function serializeFontSheet(sheet:FontSheet):XML {
 			var xml:XML = <FontData></FontData>;
 			xml.Texture = sheet.filenameWithPath;

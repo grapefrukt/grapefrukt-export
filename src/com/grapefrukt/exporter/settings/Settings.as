@@ -52,6 +52,23 @@ package com.grapefrukt.exporter.settings {
 														"pqrstuvwxyzäÄöÖ "  + 
 														"åÅ";
 		
+		/**
+		 * The desired number of decimal places in exported position values
+		 */
+		static public var positionPrecision	:uint = 2;
+		/**
+		 * The desired number of decimal places in exported scale values
+		 */
+		static public var scalePrecision	:uint = 3;
+		/**
+		 * The desired number of decimal places in exported rotation values
+		 */
+		static public var rotationPrecision	:uint = 3;
+		/**
+		 * The desired number of decimal places in exported alpha values
+		 */
+		static public var alphaPrecision	:uint = 2;
+		
 	}
 
 }
