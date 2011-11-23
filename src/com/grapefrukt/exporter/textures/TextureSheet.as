@@ -92,8 +92,14 @@ package com.grapefrukt.exporter.textures {
 		}
 		
 		protected function _sort_textures(one:TextureBase, two:TextureBase):Number {
+			// first sort on z-index
 			if (one.zIndex > two.zIndex) return -1;
 			if (one.zIndex < two.zIndex) return 1;
+			
+			// if z-index isn't available or identical, we sort on names
+			if (one.name < two.name) return -1;
+			if (one.name > two.name) return 1;
+			
 			return 0;
 		}
 		
