@@ -45,7 +45,7 @@ package com.grapefrukt.exporter.extractors {
 		public static function findMultiframe(target:MovieClip):Vector.<Child> {
 			var children:Object = { };
 			
-			for (var frame:int = 1; frame < target.totalFrames; frame++) {
+			for (var frame:int = 1; frame <= target.totalFrames; frame++) {
 				target.gotoAndStop(frame);
 				for (var childIndex:int = 0; childIndex < target.numChildren; childIndex++) {
 					var name:String = target.getChildAt(childIndex).name;
