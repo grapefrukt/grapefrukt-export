@@ -32,7 +32,8 @@ package com.grapefrukt.exporter.misc {
 	import flash.events.TimerEvent;
 	import flash.utils.Timer;
 	/**
-	 * ...
+	 * This class keeps a Vector of Functions and calls these on a short timer. This is useful for two things, firstly it's needed to avoid script timeouts on long exports.
+	 * Secondly it makes aborting or pausing the export on errors very easy. 
 	 * @author Martin Jonasson, m@grapefrukt.com
 	 */
 	
@@ -52,14 +53,24 @@ package com.grapefrukt.exporter.misc {
 			_queue_timer.addEventListener(TimerEvent.TIMER, handleQueueTimer);
 		}
 		
+		/**
+		 * Stops the timer that makes the queue tick. 
+		 */
 		public function stop():void {
 			_queue_timer.stop();
 		}
 		
+		/**
+		 * Starts the timer that will make the queue tick
+		 */
 		public function start():void {
 			_queue_timer.start();
 		}
 		
+		/**
+		 * Adds a function to the end of the queue. If the timer that calls things in the queue isn't already running this will start it.
+		 * @param	f The function to add
+		 */
 		public function add(f:Function):void {
 			_queue.push(f);
 			if (length > _peak_length) _peak_length = length;
@@ -78,7 +89,14 @@ package com.grapefrukt.exporter.misc {
 			}
 		}
 		
+		/**
+		 * The current length of the queue
+		 */
 		public function get length():uint { return _queue.length; }
+		
+		/**
+		 * The maximum length the queue has had
+		 */
 		public function get peakLength():uint { return _peak_length; }
 		
 	}
