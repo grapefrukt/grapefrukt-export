@@ -116,9 +116,9 @@ or implied, of grapefrukt games.
 				for (var frame:int = fragment.startFrame; frame <= fragment.endFrame; frame++){
 					mc.gotoAndStop(frame);
 					if (mc[part.name]) {
-						animation.setFrame(part.name, frame - fragment.startFrame, new AnimationFrame(true, mc[part.name].x, mc[part.name].y, mc[part.name].scaleX, mc[part.name].scaleY, mc[part.name].rotation, mc[part.name].alpha, Settings.scaleFactor));
+						animation.setFrame(part.name, frame - fragment.startFrame, new AnimationFrame(mc[part.name].alpha, mc[part.name].transform.matrix, Settings.scaleFactor));
 					} else {
-						animation.setFrame(part.name, frame - fragment.startFrame, new AnimationFrame(false));
+						animation.setFrame(part.name, frame - fragment.startFrame, new AnimationFrame(0));
 					}
 				}
 			}
