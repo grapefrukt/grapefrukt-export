@@ -116,6 +116,10 @@ package com.grapefrukt.exporter.textures {
 		public function get fontName():String { return _merged_texture.name; }
 		override public function get name():String { return "fonts"; }
 		
+		public function get mergedTexture():BitmapTexture {
+			return _merged_texture;
+		}
+		
 	}
 
 }
