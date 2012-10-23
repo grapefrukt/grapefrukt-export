@@ -30,6 +30,7 @@ package com.grapefrukt.exporter.serializers.data {
 	import com.grapefrukt.exporter.misc.TextureAtlasRect;
 	import com.grapefrukt.exporter.serializers.images.PNGAtlasPackerSerializer;
 	import com.grapefrukt.exporter.textures.BitmapTexture;
+	import com.grapefrukt.exporter.textures.FontSheet;
 	/**
 	 * ...
 	 * @author Martin Jonasson, m@grapefrukt.com
@@ -46,6 +47,17 @@ package com.grapefrukt.exporter.serializers.data {
 		
 		override protected function serializeTexture(texture:BitmapTexture):XML {
 			var xml:XML = super.serializeTexture(texture);
+			appendAtlasData(xml, texture);
+			return xml;
+		}
+		
+		override protected function serializeFontSheet(sheet:FontSheet):XML {
+			var xml:XML = super.serializeFontSheet(sheet);
+			appendAtlasData(xml, sheet.mergedTexture);
+			return xml;
+		}
+		
+		private function appendAtlasData(xml:XML, texture:BitmapTexture):void {
 			var rect:TextureAtlasRect = _atlaspacker.getRect(texture);
 			
 			xml.@atlas	= _atlaspacker.getAtlasName(rect.atlasIndex) + _atlaspacker.extension;
@@ -53,8 +65,6 @@ package com.grapefrukt.exporter.serializers.data {
 			xml.@right 	= scale(rect.rect.right, 	true);
 			xml.@bottom = scale(rect.rect.bottom, 	false);
 			xml.@left 	= scale(rect.rect.left, 	true);
-			
-			return xml;
 		}
 		
 		protected function scale(value:Number, xAxis:Boolean):Number {
