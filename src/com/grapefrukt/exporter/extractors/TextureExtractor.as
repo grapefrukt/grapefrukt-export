@@ -32,6 +32,7 @@ package com.grapefrukt.exporter.extractors {
 	import com.grapefrukt.exporter.misc.Child;
 	import com.grapefrukt.exporter.settings.Settings;
 	import com.grapefrukt.exporter.textures.BitmapTexture;
+	import com.grapefrukt.exporter.textures.TextureBase;
 	import com.grapefrukt.exporter.textures.TextureSheet;
 	import flash.display.Sprite;
 	
@@ -82,6 +83,9 @@ package com.grapefrukt.exporter.extractors {
 				
 				if(t) sheet.add(t);
 			}
+			
+			fixDuplicateZIndices(sheet);
+			
 			return sheet;
 		}
 		
@@ -171,6 +175,39 @@ package com.grapefrukt.exporter.extractors {
 			
 			var isMask:Boolean = name.toLowerCase().indexOf('mask') == 0;
 			return new BitmapTexture(name, crop_bitmap, bounds, zindex, isMask);
+		}
+		
+		/**
+		 * Due to some information being lost at compile time, movieclips can get multiple objects on the same z-index, this function detects and fixes that
+		 * @param	sheet The TextureSheet to fix
+		 */
+		static public function fixDuplicateZIndices(sheet:TextureSheet):void {
+			// first we need to sort the sheet by zIndex
+			sheet.textures.sort(_sort_textures_zIndex);
+			
+			// start the loop at 0, the first texture is assumed to be correct since we have no baseline to compare it to
+			// loop until the second last texture, as we're looking one "ahead" within the loop
+			for (var i:int = 0; i < sheet.textures.length - 1; i++) {
+				var currentTexture:TextureBase = sheet.textures[i];
+				var nextTexture:TextureBase = sheet.textures[i + 1];
+				
+				// if these two textures have the same zIndex, bump up the "next" texture and all following one step
+				if (currentTexture.zIndex == nextTexture.zIndex) {
+					for (var j:int = i + 1; j < sheet.textures.length - 1; j++ ) sheet.textures[j].zIndex++;
+				}
+			}
+		}
+		
+		static private function _sort_textures_zIndex(one:TextureBase, two:TextureBase):Number {
+			// first sort on z-index
+			if (one.zIndex > two.zIndex) return 1;
+			if (one.zIndex < two.zIndex) return -1;
+			
+			// if z-index isn't available or identical, we sort on names
+			if (one.name < two.name) return -1;
+			if (one.name > two.name) return 1;
+			
+			return 0;
 		}
 		
 	}
