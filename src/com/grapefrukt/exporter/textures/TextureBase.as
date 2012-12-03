@@ -47,11 +47,15 @@ package com.grapefrukt.exporter.textures {
 		}
 		
 		public function get name():String { return _name; }
-		public function get zIndex():int { return _z_index; }
 		public function get isMask():Boolean { return _is_mask; }
 		
 		public function get filenameWithPath():String {
 			return sheet.name + Settings.directorySeparator + name + extension;
+		}
+		
+		public function get zIndex():int { return _z_index; }
+		public function set zIndex(value:int):void {
+			_z_index = value;
 		}
 		
 		public function get sheet():TextureSheet { return _sheet; }
