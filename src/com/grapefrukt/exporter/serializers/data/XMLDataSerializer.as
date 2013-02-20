@@ -190,7 +190,11 @@ package com.grapefrukt.exporter.serializers.data {
 				
 				// warning. here be matrix math!
 				var scaleX:Number = Math.sqrt(m.a * m.a + m.b * m.b);
+				if (m.a < 0)
+					scaleX = -scaleX;
 				var scaleY:Number = Math.sqrt(m.c * m.c + m.d * m.d);
+				if (m.d < 0)
+					scaleY = -scaleY;
 				xml.@scaleX 	= scaleX.toFixed(Settings.scalePrecision)
 				xml.@scaleY 	= scaleY.toFixed(Settings.scalePrecision);
 				
